@@ -1,9 +1,10 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
-import co.edu.uniquindio.agencia20241.controller.EmpleadoController;
+import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
+import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
 import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
-import co.edu.uniquindio.agencia20241.model.Empleado;
-import javafx.beans.Observable;
+import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,10 +16,9 @@ import java.util.Optional;
 
 public class EmpleadoViewController {
 
-    EmpleadoController empleadoControllerService;
-    ObservableList<EmpleadoDto>listaEmpleadosDto= FXCollections.observableArrayList();
-
-    EmpleadoDto empleadoSeleccionado;
+    private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
+    private ObservableList<EmpleadoDto>listaEmpleadosDto= FXCollections.observableArrayList();
+    private EmpleadoDto empleadoSeleccionado;
 
     @FXML
     private Button btnAgregar;
@@ -61,11 +61,9 @@ public class EmpleadoViewController {
 
     @FXML
     void initialize() {
-        empleadoControllerService = new EmpleadoController();
         initView();
     }
  @FXML
-
     private void initView(){
 
      initDataBindig();
@@ -77,17 +75,17 @@ public class EmpleadoViewController {
  }
  private void initDataBindig(){
 
-     colCorreoEmpleado.setCellValueFactory(new PropertyValueFactory<>("CorreoElectronico"));
-     colIdentificacionEmpleado.setCellValueFactory(new PropertyValueFactory<>("Id"));
-     colNombreEmpleado.setCellValueFactory(new PropertyValueFactory<>("Nombre"));
-     colRolEmpleado.setCellValueFactory(new PropertyValueFactory<>("eventosAsiganados"));
+     colCorreoEmpleado.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().correoElectronico()));
+     colIdentificacionEmpleado.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().id()));
+     colNombreEmpleado.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().nombre()));
+     colRolEmpleado.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().eventosAsiganados()));
 
 
 
  }
 
     private void obtenerEmpleado() {
-        listaEmpleadosDto.addAll(empleadoControllerService.obtenerEmpleados());
+        listaEmpleadosDto.addAll(AgenciaMapper.INSTANCE.getEmpleadosDto(  modelFactoryController.obtenerEmpleados()) );
     }
 
     private void listenerSelection() {
@@ -117,27 +115,26 @@ public class EmpleadoViewController {
     }
 
     @FXML
-    void agregarEmpleadoAction(ActionEvent event) {
+    void agregarEmpleadoAction(ActionEvent event) throws EmpleadoException {
         crearEmpleado();
     }
 
     @FXML
-    void eliminarEmpleadoAction(ActionEvent event) {
+    void eliminarEmpleadoAction(ActionEvent event) throws EmpleadoException {
         eliminarEmpleado();
     }
 
-
     @FXML
-    void actualizarEmpleadoAction(ActionEvent event) {
+    void actualizarEmpleadoAction(ActionEvent event) throws EmpleadoException {
         actualizarEmpleado();
     }
 
-    private void crearEmpleado() {
+    private void crearEmpleado() throws EmpleadoException {
         //1. Capturar los datos
         EmpleadoDto empleadoDto = construirEmpleadoDto();
         //2. Validar la información
         if(datosValidos(empleadoDto)){
-            if(empleadoControllerService.agregarEmpleado(empleadoDto)){
+            if(modelFactoryController.crearEmpleado(empleadoDto.nombre(), empleadoDto.id(), empleadoDto.correoElectronico(), empleadoDto.eventosAsiganados()) != null){
                 listaEmpleadosDto.add(empleadoDto);
                 mostrarMensaje("Notificación empleado", "Empleado creado", "El empleado se ha creado con éxito", Alert.AlertType.INFORMATION);
                 limpiarCamposEmpleado();
@@ -150,11 +147,11 @@ public class EmpleadoViewController {
 
     }
 
-    private void eliminarEmpleado() {
+    private void eliminarEmpleado() throws EmpleadoException {
         boolean empleadoEliminado = false;
         if(empleadoSeleccionado != null){
             if(mostrarMensajeConfirmacion("¿Estas seguro de elmininar al empleado?")){
-                empleadoEliminado = empleadoControllerService.eliminarEmpleado(empleadoSeleccionado.id());
+                empleadoEliminado = modelFactoryController.eliminarEmpleado(empleadoSeleccionado.id());
                 if(empleadoEliminado == true){
                     listaEmpleadosDto.remove(empleadoSeleccionado);
                     empleadoSeleccionado = null;
@@ -170,7 +167,7 @@ public class EmpleadoViewController {
         }
     }
 
-    private void actualizarEmpleado() {
+    private void actualizarEmpleado() throws EmpleadoException {
         boolean clienteActualizado = false;
         //1. Capturar los datos
         String cedulaActual = empleadoSeleccionado.id();
@@ -179,7 +176,7 @@ public class EmpleadoViewController {
         if(empleadoSeleccionado != null){
             //3. Validar la información
             if(datosValidos(empleadoSeleccionado)){
-                clienteActualizado = empleadoControllerService.actualizarEmpleado(cedulaActual,empleadoDto);
+                clienteActualizado = modelFactoryController.actualizarEmpleado(cedulaActual,empleadoDto.nombre(), empleadoDto.correoElectronico(), empleadoDto.eventosAsiganados());
                 if(clienteActualizado){
                     listaEmpleadosDto.remove(empleadoSeleccionado);
                     listaEmpleadosDto.add(empleadoDto);
@@ -202,9 +199,7 @@ public class EmpleadoViewController {
                 txtNombreEmpleados.getText(),
                 txtIdentificacionEmpleados.getText(),
                 txtCorreoEmpleados.getText(),
-                txtRolEmpleados.getText(),
-
-                ""
+                txtRolEmpleados.getText()
         );
     }
 

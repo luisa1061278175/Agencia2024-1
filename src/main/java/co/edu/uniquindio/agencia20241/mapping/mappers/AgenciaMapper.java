@@ -1,8 +1,10 @@
 package co.edu.uniquindio.agencia20241.mapping.mappers;
 
 import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.model.Empleado;
 
+import co.edu.uniquindio.agencia20241.model.Usuario;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,14 +27,32 @@ public interface AgenciaMapper {
     @IterableMapping(qualifiedByName = "empleadoToEmpleadoDto")
     List<EmpleadoDto> getEmpleadosDto(List<Empleado> listaEmpleados);
 
-
-
     @Named("mappingToEmpeladoDto")
     EmpleadoDto mappingToEmpeladoDto(Empleado empleado);
 
-    @Mapping(target = "nombreEmpleado", source = "empleado.nombre")
+    @Mapping(target = "nombre", source = "empleado.nombre")
     @IterableMapping(qualifiedByName = "cunetaToCuentaDto")
     EmpleadoDto clienteToClienteDto(Empleado empleado);
+
+    //USUARIOS
+
+    @Named("usuarioToUsuarioDto")
+    UsuarioDto usuarioToUsuarioDto(Usuario usuario);
+
+    Usuario usuarioToUsuarioDto(UsuarioDto usuarioDto);
+
+    @IterableMapping(qualifiedByName = "usuarioToUsuarioDto")
+    List<UsuarioDto> getUsuariosDto(List<Usuario> listaUsuarios);
+
+    @Named("mappingToUsuarioDto")
+    UsuarioDto mappingToUsuarioDto(Usuario usuario);
+
+//    @Mapping(target = "nombre", source = "usuario.nombre")
+//    @IterableMapping(qualifiedByName = "cunetaToCuentaDto")
+//    UsuarioDto clienteToClienteDto(Usuario usuario);
+
+
+
 
 
 }

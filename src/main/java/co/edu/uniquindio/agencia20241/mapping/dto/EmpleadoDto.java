@@ -4,7 +4,6 @@ public record EmpleadoDto(
         String nombre,
         String id,
         String correoElectronico,
-        String eventosAsiganados,
-        String listaEmpleados
+        String eventosAsiganados
 ) {
 }

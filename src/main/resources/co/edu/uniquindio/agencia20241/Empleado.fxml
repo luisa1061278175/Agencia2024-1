@@ -60,12 +60,12 @@
                             <children>
                                 <VBox alignment="CENTER" prefHeight="113.0" prefWidth="168.0">
                                     <children>
-                                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregar" prefHeight="21.0" prefWidth="126.0" styleClass="button4" stylesheets="@style.css" text="Agregar">
+                                        <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarEmpleadoAction" prefHeight="21.0" prefWidth="126.0" styleClass="button4" stylesheets="@style.css" text="Agregar">
                                             <VBox.margin>
                                                 <Insets left="15.0" top="10.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminar" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Eliminar">
+                                        <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminarEmpleadoAction" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Eliminar">
                                             <VBox.margin>
                                                 <Insets bottom="10.0" left="15.0" top="10.0" />
                                             </VBox.margin>
@@ -74,12 +74,11 @@
                                 </VBox>
                                 <VBox alignment="CENTER" prefHeight="113.0" prefWidth="150.0">
                                     <children>
-                                        <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#modificar" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Modificar">
+                                        <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#actualizarEmpleadoAction" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Modificar">
                                             <VBox.margin>
                                                 <Insets bottom="10.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#regresar" prefHeight="26.0" prefWidth="133.0" styleClass="button4" stylesheets="@style.css" text="Regresar" />
                                     </children>
                                 </VBox>
                             </children>
