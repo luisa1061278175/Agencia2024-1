@@ -164,7 +164,7 @@ public class UsuarioViewController {
         UsuarioDto usuarioDto = construirUsuarioDto();
         if(usuarioSeleccionado != null){
             if(datosValidos(usuarioDto)){
-                usuarioActualizado = modelFactoryController.actualizarUsuario(idActual, usuarioDto.nombre(), usuarioDto.correoElectronico());
+                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(),usuarioDto.id() , usuarioDto.correoElectronico());
                 if(usuarioActualizado){
                     listaUsuariosDto.remove(usuarioSeleccionado);
                     listaUsuariosDto.add(usuarioDto);

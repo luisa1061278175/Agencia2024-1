@@ -1,9 +1,11 @@
 package co.edu.uniquindio.agencia20241.mapping.mappers;
 
 import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.model.Empleado;
 
+import co.edu.uniquindio.agencia20241.model.Eventos;
 import co.edu.uniquindio.agencia20241.model.Usuario;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
@@ -46,6 +48,16 @@ public interface AgenciaMapper {
 
     @Named("mappingToUsuarioDto")
     UsuarioDto mappingToUsuarioDto(Usuario usuario);
+
+
+    //EVENTOS
+    @Named("eventoToEventoDto")
+    EventoDto eventoToEventoDto(Eventos eventos);
+
+    Eventos eventoDtoToEvento(EventoDto eventoDto);
+
+    @IterableMapping(qualifiedByName = "eventoToEventoDto")
+    List<EventoDto> getEventosDto(List<Eventos> listaEventos);
 
 //    @Mapping(target = "nombre", source = "usuario.nombre")
 //    @IterableMapping(qualifiedByName = "cunetaToCuentaDto")

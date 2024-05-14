@@ -63,8 +63,8 @@ public class ModelFactoryController implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarUsuario(String cedulaActual,  String nombre, String correo) throws EmpleadoException {
-        return agencia.actualizarUsuario(cedulaActual, nombre, correo);
+    public boolean actualizarUsuario(String nombre ,String cedulaActual,String correo) throws EmpleadoException {
+        return agencia.actualizarUsuario(nombre, cedulaActual, correo);
     }
 
     @Override
@@ -89,27 +89,27 @@ public class ModelFactoryController implements IAgenciaService {
 
     @Override
     public boolean eliminarEvento(String nombre) throws EmpleadoException {
-        return false;
+        return  agencia.eliminarEvento(nombre);
     }
 
     @Override
     public boolean actualizarEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
-        return false;
+        return agencia.actualizarEvento(nombreEvento,descripcionEvento,fechaEvento,horaEvento,ubicacionEvento,capacidadMaximaEvento);
     }
 
     @Override
     public boolean verificarEventoExistente(String nombre) throws EmpleadoException {
-        return false;
+        return agencia.verificarEventoExistente(nombre);
     }
 
     @Override
     public Eventos obtenerEvento(String nombre) {
-        return null;
+        return agencia.obtenerEvento(nombre);
     }
 
     @Override
     public ArrayList<Eventos> obtenerEventos() {
-        return null;
+        return agencia.obtenerEventos();
     }
 
     //------------------------------  Singleton ------------------------------------------------

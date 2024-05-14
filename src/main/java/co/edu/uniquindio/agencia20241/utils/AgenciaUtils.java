@@ -50,7 +50,7 @@ public class AgenciaUtils {
         eventos.setNombreEvento("Bailando ");
         eventos.setUbicacionEvento("Bolo Club");
 
-
+agencia.obtenerEventos().add(eventos);
 
 
 

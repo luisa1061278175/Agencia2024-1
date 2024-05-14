@@ -8,7 +8,10 @@ public record EventoDto(
          String descripcionEvento,
          LocalDate fechaEvento,
          LocalTime horaEvento,
-         String ubicacionEvento,
-         int capacidadMaximaEvento
+        int capacidadMaximaEvento,
+         String ubicacionEvento
+
 ) {
+
+
 }

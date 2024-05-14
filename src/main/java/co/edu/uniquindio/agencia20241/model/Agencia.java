@@ -172,18 +172,19 @@ public class Agencia implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarUsuario(String cedulaActual, String nombre, String correo) throws EmpleadoException {
+    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo) throws EmpleadoException {
         Usuario usuario = obtenerUsuario(cedulaActual);
-        if(usuario == null)
-            throw new EmpleadoException("El empleado a actualizar no existe");
-        else{
+        if(usuario == null) {
+            throw new EmpleadoException("El usuario a actualizar no existe");
+        } else {
+            // Realiza la actualización del usuario
             usuario.setNombre(nombre);
             usuario.setId(cedulaActual);
             usuario.setCorreoElectronico(correo);
-
             return true;
         }
     }
+
 
     @Override
     public boolean verificarUsuarioExistente(String cedula) throws EmpleadoException {
@@ -231,55 +232,70 @@ public class Agencia implements IAgenciaService {
 
 
 
-    @Override
     public Eventos crearEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
         Eventos nuevoEvento = null;
         boolean eventoExiste = verificarEventoExistente(nombreEvento);
         if(eventoExiste){
-            throw new EmpleadoException("El evento  ya existe");
-        }else{
-            Eventos eventos= new Eventos();
-
-            eventos.setDescripcionEvento(descripcionEvento);
-            eventos.setCapacidadMaximaEvento(capacidadMaximaEvento);
-            eventos.setFechaEvento(fechaEvento);
-            eventos.setHoraEvento(horaEvento);
-            eventos.setNombreEvento(nombreEvento);
-            eventos.setUbicacionEvento(ubicacionEvento);
-
-
+            throw new EmpleadoException("El evento ya existe");
+        } else {
+            nuevoEvento = new Eventos(nombreEvento, descripcionEvento, fechaEvento, horaEvento, ubicacionEvento, capacidadMaximaEvento);
             obtenerEventos().add(nuevoEvento);
         }
         return nuevoEvento;
     }
+
     @Override
     public boolean eliminarEvento(String nombre) throws EmpleadoException {
-        return false;
+        Eventos evento = null;
+        boolean flagExiste = false;
+        evento = obtenerEvento(nombre);
+        if(evento == null)
+            throw new EmpleadoException("El evento a eliminar no existe");
+        else{
+            obtenerEventos().remove(evento);
+            flagExiste = true;
+        }
+        return flagExiste;
     }
 
     @Override
     public boolean actualizarEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
-        return false;
+        Eventos evento = obtenerEvento(nombreEvento);
+        if(evento == null)
+            throw new EmpleadoException("El evento a actualizar no existe");
+        else{
+            evento.setDescripcionEvento(descripcionEvento);
+            evento.setFechaEvento(fechaEvento);
+            evento.setHoraEvento(horaEvento);
+            evento.setUbicacionEvento(ubicacionEvento);
+            evento.setCapacidadMaximaEvento(capacidadMaximaEvento);
+            return true;
+        }
     }
 
     @Override
     public boolean verificarEventoExistente(String nombre) throws EmpleadoException {
+        for (Eventos evento : obtenerEventos()) {
+            if(evento.getNombreEvento().equalsIgnoreCase(nombre)){
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public Eventos obtenerEvento(String nombre) {
-        Eventos eventoEncontrado = null;
-        for (Eventos eventos : obtenerEventos()) {
-            if(eventos.getNombreEvento().equalsIgnoreCase(nombre)){
-                eventoEncontrado = eventos;
-                break;
+        for (Eventos evento : obtenerEventos()) {
+            if(evento.getNombreEvento().equalsIgnoreCase(nombre)){
+                return evento;
             }
         }
-        return eventoEncontrado;}
+        return null;
+    }
 
     @Override
     public ArrayList<Eventos> obtenerEventos() {
-        return null;
+        return listaEventos;
     }
+
 }
