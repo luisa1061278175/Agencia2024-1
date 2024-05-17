@@ -2,18 +2,19 @@ package co.edu.uniquindio.agencia20241.model;
 
 import java.util.ArrayList;
 
-public class Usuario extends Persona{
+public class Usuario extends Persona {
     private String reservasRealizadas;
 
-    ArrayList<Usuario>listaUsuarios= new ArrayList<>();
+    private String contrasenia;
 
-    public Usuario(String nombre, String id, String correoElectronico, String reservasRealizadas, ArrayList<Usuario> listaUsuarios) {
+    public Usuario(String nombre, String id, String correoElectronico, String reservasRealizadas, String contrasenia) {
         super(nombre, id, correoElectronico);
         this.reservasRealizadas = reservasRealizadas;
-        this.listaUsuarios = listaUsuarios;
+        this.contrasenia = contrasenia;
     }
 
-    public Usuario() {
+    public Usuario(){
+
 
     }
 
@@ -25,11 +26,11 @@ public class Usuario extends Persona{
         this.reservasRealizadas = reservasRealizadas;
     }
 
-    public ArrayList<Usuario> getListaUsuarios() {
-        return listaUsuarios;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
-        this.listaUsuarios = listaUsuarios;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }

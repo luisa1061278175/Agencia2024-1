@@ -2,10 +2,10 @@ package co.edu.uniquindio.agencia20241.model;
 
 import co.edu.uniquindio.agencia20241.controller.service.IAgenciaService;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.utils.Utils;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Agencia implements IAgenciaService {
     private static final long serialVersionUID = 1L;
@@ -13,6 +13,8 @@ public class Agencia implements IAgenciaService {
     ArrayList<Usuario> listaUsuarios = new ArrayList<>();
     ArrayList<Reserva> listaReservas = new ArrayList<>();
     ArrayList<Eventos> listaEventos = new ArrayList<>();
+
+    public Usuario idUsuarioAutenticado;
 
     public Agencia() {
 
@@ -220,6 +222,11 @@ public class Agencia implements IAgenciaService {
         return usuarioEncontrado;
     }
 
+//para imprimir el usuario en la tabla
+
+
+
+
 
     @Override
     public ArrayList<Usuario> obtenerUsuarios() {
@@ -232,7 +239,7 @@ public class Agencia implements IAgenciaService {
 
 
 
-    public Eventos crearEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
+    public Eventos crearEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
         Eventos nuevoEvento = null;
         boolean eventoExiste = verificarEventoExistente(nombreEvento);
         if(eventoExiste){
@@ -259,7 +266,7 @@ public class Agencia implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
+    public boolean actualizarEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
         Eventos evento = obtenerEvento(nombreEvento);
         if(evento == null)
             throw new EmpleadoException("El evento a actualizar no existe");
@@ -297,5 +304,45 @@ public class Agencia implements IAgenciaService {
     public ArrayList<Eventos> obtenerEventos() {
         return listaEventos;
     }
+
+
+    @Override
+
+    public List<Usuario> obtenerUsuarioId(String id) {
+        List<Usuario> usuariosEncontrados = new ArrayList<>();
+
+        for (Usuario u : obtenerUsuarios()) {
+            if (u.getId().equals(id)) {
+                usuariosEncontrados.add(u);
+            }
+        }
+
+        return usuariosEncontrados;
+    }
+
+    //validar datos para archivo properties
+    @Override
+
+    public boolean validarUsuarioProperties(String usuario, String contrasena){
+        Login datosArchivo = Utils.leerArchvos();
+
+        if( datosArchivo.getUsername().equals(usuario) && datosArchivo.getContrasena().equals(contrasena) ){
+            return true;
+        }else {
+            return false;
+        }}
+
+
+//reservas
+
+    @Override
+public void agregarReserva(Reserva reserva) {
+    listaReservas.add(reserva);
+}
+@Override
+    public ArrayList<Reserva> obtenerReservas() {
+        return listaReservas;
+    }
+
 
 }

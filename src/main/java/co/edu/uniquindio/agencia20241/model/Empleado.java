@@ -6,11 +6,17 @@ public class Empleado extends Persona {
 
     private String eventosAsiganados;
 
-    ArrayList<Empleado> listaEmpleados = new ArrayList<>();
+    private String contrasenia;
 
     public Empleado() {
 
 
+    }
+
+    public Empleado(String nombre, String id, String correoElectronico, String eventosAsiganados, String contrasenia) {
+        super(nombre, id, correoElectronico);
+        this.eventosAsiganados = eventosAsiganados;
+        this.contrasenia = contrasenia;
     }
 
     public String getEventosAsiganados() {
@@ -21,11 +27,11 @@ public class Empleado extends Persona {
         this.eventosAsiganados = eventosAsiganados;
     }
 
-    public ArrayList<Empleado> getListaEmpleados() {
-        return listaEmpleados;
+    public String getContrasenia() {
+        return contrasenia;
     }
 
-    public void setListaEmpleados(ArrayList<Empleado> listaEmpleados) {
-        this.listaEmpleados = listaEmpleados;
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
     }
 }

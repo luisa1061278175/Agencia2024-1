@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="702.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.agencia20241.viewController.EventoUsuarioViewController">
+    <children>
+        <VBox alignment="CENTER" prefHeight="550.0" prefWidth="706.0" styleClass="vbox" stylesheets="@../../../../../../../../../../IdeaProjects/EjemploCrud/src/Estilo/style.css">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eventos">
+                    <font>
+                        <Font name="Beautiful Lovina Regular" size="67.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="45.0" />
+                    </VBox.margin>
+                </Text>
+                <HBox prefHeight="71.0" prefWidth="726.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="872.0">
+                     <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cantidad de Reservas" />
+                                <TextField fx:id="txtCantidadReservas" prefHeight="26.0" prefWidth="256.0">
+                           <VBox.margin>
+                              <Insets left="100.0" right="100.0" />
+                           </VBox.margin>
+                                </TextField>
+                     </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <TableView fx:id="tabla" prefHeight="201.0" prefWidth="651.0" stylesheets="@style.css">
+                    <columns>
+                        <TableColumn fx:id="colNombreEvento" prefWidth="75.94027608633041" text="Nombre" />
+                        <TableColumn fx:id="colDescripcionEvento" prefWidth="95.99996185302734" text="Descripción" />
+                        <TableColumn fx:id="colFechaEvento" prefWidth="83.10453796386719" text="Fecha" />
+                        <TableColumn fx:id="colHoraEvento" prefWidth="85.25372314453125" text="Hora" />
+                        <TableColumn fx:id="colUbicacionEvento" prefWidth="84.53729248046875" text="Ubicación" />
+                        <TableColumn fx:id="colCantidadMaximaEvento" prefWidth="117.4925537109375" text="Cantidad Max" />
+                  <TableColumn fx:id="colReservas" prefWidth="117.4925537109375" text="Reservas" />
+                    </columns>
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </TableView>
+                      <Button fx:id="btnReservar" onAction="reservar" mnemonicParsing="false" prefHeight="26.0"  prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Reservar">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+                      </Button>
+            </children>
+        </VBox>
+    </children>
+</HBox>

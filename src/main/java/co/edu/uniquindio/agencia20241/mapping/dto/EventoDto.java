@@ -5,11 +5,11 @@ import java.time.LocalTime;
 
 public record EventoDto(
         String nombreEvento,
-         String descripcionEvento,
-         LocalDate fechaEvento,
-         LocalTime horaEvento,
+        String descripcionEvento,
+        String fechaEvento,
+        String horaEvento,
         int capacidadMaximaEvento,
-         String ubicacionEvento
+        String ubicacionEvento
 
 ) {
 

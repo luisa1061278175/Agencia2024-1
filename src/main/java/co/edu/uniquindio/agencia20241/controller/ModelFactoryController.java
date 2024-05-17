@@ -2,16 +2,10 @@ package co.edu.uniquindio.agencia20241.controller;
 
 import co.edu.uniquindio.agencia20241.controller.service.IAgenciaService;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
-import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
-import co.edu.uniquindio.agencia20241.model.Agencia;
-import co.edu.uniquindio.agencia20241.model.Empleado;
-import co.edu.uniquindio.agencia20241.model.Eventos;
-import co.edu.uniquindio.agencia20241.model.Usuario;
+import co.edu.uniquindio.agencia20241.model.*;
 import co.edu.uniquindio.agencia20241.utils.AgenciaUtils;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +24,7 @@ public class ModelFactoryController implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarEmpleado(String cedulaActual,  String nombre, String correo, String eventos) throws EmpleadoException {
+    public boolean actualizarEmpleado(String cedulaActual, String nombre, String correo, String eventos) throws EmpleadoException {
         return agencia.actualizarEmpleado(cedulaActual, nombre, correo, eventos);
     }
 
@@ -63,7 +57,7 @@ public class ModelFactoryController implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarUsuario(String nombre ,String cedulaActual,String correo) throws EmpleadoException {
+    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo) throws EmpleadoException {
         return agencia.actualizarUsuario(nombre, cedulaActual, correo);
     }
 
@@ -82,19 +76,23 @@ public class ModelFactoryController implements IAgenciaService {
         return agencia.obtenerUsuarios();
     }
 
+
+    // EVENTOS
+
+
     @Override
-    public Eventos crearEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
+    public Eventos crearEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
         return null;
     }
 
     @Override
     public boolean eliminarEvento(String nombre) throws EmpleadoException {
-        return  agencia.eliminarEvento(nombre);
+        return agencia.eliminarEvento(nombre);
     }
 
     @Override
-    public boolean actualizarEvento(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
-        return agencia.actualizarEvento(nombreEvento,descripcionEvento,fechaEvento,horaEvento,ubicacionEvento,capacidadMaximaEvento);
+    public boolean actualizarEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
+        return agencia.actualizarEvento(nombreEvento, descripcionEvento, fechaEvento, horaEvento, ubicacionEvento, capacidadMaximaEvento);
     }
 
     @Override
@@ -111,6 +109,28 @@ public class ModelFactoryController implements IAgenciaService {
     public ArrayList<Eventos> obtenerEventos() {
         return agencia.obtenerEventos();
     }
+
+    @Override
+    public List<Usuario> obtenerUsuarioId(String id) {
+        return agencia.obtenerUsuarioId(id);
+    }
+
+
+    @Override
+    public boolean validarUsuarioProperties(String usuario, String contrasena) {
+
+        return agencia.validarUsuarioProperties(usuario, contrasena);
+    }
+    @Override
+    public void agregarReserva(Reserva reserva) {
+        agencia.agregarReserva(reserva);
+    }
+
+    @Override
+    public ArrayList<Reserva> obtenerReservas() {
+        return agencia.obtenerReservas();
+    }
+
 
     //------------------------------  Singleton ------------------------------------------------
     // Clase estatica oculta. Tan solo se instanciara el singleton una vez

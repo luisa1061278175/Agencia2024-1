@@ -6,12 +6,12 @@ import java.time.LocalTime;
 public class Eventos {
     private String nombreEvento;
     private String descripcionEvento;
-    private LocalDate fechaEvento;
-    private LocalTime horaEvento;
+    private String fechaEvento;
+    private String horaEvento;
     private String ubicacionEvento;
     private int capacidadMaximaEvento;
 
-    public Eventos(String nombreEvento, String descripcionEvento, LocalDate fechaEvento, LocalTime horaEvento, String ubicacionEvento, int capacidadMaximaEvento) {
+    public Eventos(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) {
         this.nombreEvento = nombreEvento;
         this.descripcionEvento = descripcionEvento;
         this.fechaEvento = fechaEvento;
@@ -39,19 +39,19 @@ public class Eventos {
         this.descripcionEvento = descripcionEvento;
     }
 
-    public LocalDate getFechaEvento() {
+    public String getFechaEvento() {
         return fechaEvento;
     }
 
-    public void setFechaEvento(LocalDate fechaEvento) {
+    public void setFechaEvento(String fechaEvento) {
         this.fechaEvento = fechaEvento;
     }
 
-    public LocalTime getHoraEvento() {
+    public String getHoraEvento() {
         return horaEvento;
     }
 
-    public void setHoraEvento(LocalTime horaEvento) {
+    public void setHoraEvento(String horaEvento) {
         this.horaEvento = horaEvento;
     }
 

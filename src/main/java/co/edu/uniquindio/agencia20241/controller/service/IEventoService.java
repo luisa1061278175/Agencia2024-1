@@ -12,15 +12,15 @@ public interface IEventoService {
 
     Eventos crearEvento(String nombreEvento,
                         String descripcionEvento,
-                        LocalDate fechaEvento,
-                        LocalTime horaEvento,
+                        String fechaEvento,
+                        String horaEvento,
                         String ubicacionEvento,
                         int capacidadMaximaEvento) throws EmpleadoException;
     boolean eliminarEvento(String nombre) throws EmpleadoException;
     boolean actualizarEvento(String nombreEvento,
                              String descripcionEvento,
-                             LocalDate fechaEvento,
-                             LocalTime horaEvento,
+                             String fechaEvento,
+                             String horaEvento,
                              String ubicacionEvento,
                              int capacidadMaximaEvento) throws EmpleadoException;
     boolean  verificarEventoExistente(String nombre) throws EmpleadoException;

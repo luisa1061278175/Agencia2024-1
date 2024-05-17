@@ -3,6 +3,7 @@ module co.edu.uniquindio.agencia20241 {
     requires javafx.fxml;
     requires org.controlsfx.controls;
     requires org.mapstruct;
+    requires java.logging;
 
     opens co.edu.uniquindio.agencia20241 to javafx.fxml;
     exports co.edu.uniquindio.agencia20241;

@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class EventoViewController {
@@ -112,8 +113,8 @@ public class EventoViewController {
         if (eventoSeleccionado != null) {
             txtNombreEvento.setText(eventoSeleccionado.nombreEvento());
             txtDescripcionEvento.setText(eventoSeleccionado.descripcionEvento());
-            txtFechaEvento.setText(eventoSeleccionado.fechaEvento().toString());
-            txtHoraEvento.setText(eventoSeleccionado.horaEvento().toString());
+            txtFechaEvento.setText(eventoSeleccionado.fechaEvento());
+            txtHoraEvento.setText(eventoSeleccionado.horaEvento());
             txtUbicacionEvento.setText(eventoSeleccionado.ubicacionEvento());
             txtCapacidadMaximaEvento.setText(String.valueOf(eventoSeleccionado.capacidadMaximaEvento()));
         }
@@ -144,6 +145,7 @@ public class EventoViewController {
         actualizarEvento();
     }
 
+    @FXML
     private void crearEvento() throws EmpleadoException {
         // 1. Capturar los datos
         EventoDto eventoDto = construirEventoDto();
@@ -208,28 +210,19 @@ public class EventoViewController {
 
     private EventoDto construirEventoDto() {
 
-        LocalDate fechaEvento = LocalDate.parse(txtFechaEvento.getText());
 
-        LocalTime horaEvento = LocalTime.parse(txtHoraEvento.getText());
+            return new EventoDto(
+                    txtNombreEvento.getText(),
+                    txtDescripcionEvento.getText(),
+                    txtFechaEvento.getText(),
+                    txtHoraEvento.getText(),
+                    Integer.parseInt(txtCapacidadMaximaEvento.getText()),
+                    txtUbicacionEvento.getText()
+            );
 
-        return new EventoDto(
-                txtNombreEvento.getText(),
-
-                txtDescripcionEvento.getText(),
-
-                fechaEvento,
-
-                horaEvento,
-
-                Integer.parseInt(txtCapacidadMaximaEvento.getText()),
-
-                txtUbicacionEvento.getText()
-
-
-
-
-        );
     }
+
+
 
     private void limpiarCamposEvento() {
         txtNombreEvento.setText("");
