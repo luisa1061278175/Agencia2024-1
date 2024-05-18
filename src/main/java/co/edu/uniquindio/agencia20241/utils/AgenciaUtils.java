@@ -58,7 +58,7 @@ public class AgenciaUtils {
 //EVENTO
 
         Eventos eventos= new Eventos();
-        eventos.setCapacidadMaximaEvento(45);
+        eventos.setCapacidadMaximaEvento(100);
         eventos.setDescripcionEvento("Baile");
         eventos.setFechaEvento("2023, 1, 30");
         eventos.setHoraEvento("02:43");

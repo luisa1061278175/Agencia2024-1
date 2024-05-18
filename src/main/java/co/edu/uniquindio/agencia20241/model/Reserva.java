@@ -1,25 +1,30 @@
 package co.edu.uniquindio.agencia20241.model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Reserva {
     private String id;
     private Usuario usuario;
     private Eventos evento;
-    private String  fechaSolicitud;
+    private LocalDate fechaSolicitud;
     private String estadoReserva;
 
-    public Reserva(String id, Usuario usuario, Eventos evento, String fechaSolicitud, String estadoReserva) {
+    public Reserva(String id, Usuario usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
         this.id = id;
         this.usuario = usuario;
         this.evento = evento;
-        this.fechaSolicitud = fechaSolicitud;
+        this.fechaSolicitud = LocalDate.now();
         this.estadoReserva = estadoReserva;
     }
 
     public Reserva(){
 
     }
+
+    public Reserva(String idReserva, String s, Usuario usuario, LocalDate now, String estado) {
+    }
+
 
     public String getId() {
         return id;
@@ -45,11 +50,11 @@ public class Reserva {
         this.evento = evento;
     }
 
-    public String getFechaSolicitud() {
+    public LocalDate getFechaSolicitud() {
         return fechaSolicitud;
     }
 
-    public void setFechaSolicitud(String fechaSolicitud) {
+    public void setFechaSolicitud(LocalDate fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
     }
 

@@ -2,7 +2,9 @@ package co.edu.uniquindio.agencia20241.model;
 
 import co.edu.uniquindio.agencia20241.controller.service.IAgenciaService;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.utils.Utils;
+import co.edu.uniquindio.agencia20241.viewController.UsuariousuarioViewController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,8 @@ public class Agencia implements IAgenciaService {
     ArrayList<Usuario> listaUsuarios = new ArrayList<>();
     ArrayList<Reserva> listaReservas = new ArrayList<>();
     ArrayList<Eventos> listaEventos = new ArrayList<>();
+    private UsuariousuarioViewController usuariousuarioViewController= new UsuariousuarioViewController();
+
 
     public Usuario idUsuarioAutenticado;
 
@@ -334,6 +338,19 @@ public class Agencia implements IAgenciaService {
 
 
 //reservas
+
+    public Usuario buscarUsuario(String id) {
+        for (Usuario u :obtenerUsuarios()) {
+            if (u.getId().equals(id)) {
+                UsuarioDto usuarioDto = new UsuarioDto(u.getId(), u.getNombre(), u.getCorreoElectronico());
+                // Agregar el UsuarioDto al ObservableList
+                usuariousuarioViewController.usuarioAutenticado.add(usuarioDto);
+                System.out.println(""+usuariousuarioViewController.usuarioAutenticado);
+                return u;
+            }
+        }
+        return null;
+    }
 
     @Override
 public void agregarReserva(Reserva reserva) {

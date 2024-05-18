@@ -29,7 +29,7 @@ public class InicioSesionController {
     private Empleado empleado = new Empleado();
 
     //para saber que usuario inicio sesion
-    private String idUsuarioAutenticado;
+   public static String idUsuarioAutenticado;
     private UsuariousuarioViewController usuariousuarioViewController= new UsuariousuarioViewController();
 
     @FXML
@@ -75,7 +75,7 @@ public class InicioSesionController {
             cargarAdmin(stage);
         } else {
             // Buscar usuario
-            Usuario usuario = buscarUsuario(id);
+            Usuario usuario = modelFactoryController.buscarUsuario(id);
             // Buscar empleado
             Empleado empleado = buscarEmpleado(id);
 
@@ -85,7 +85,7 @@ public class InicioSesionController {
                 idUsuarioAutenticado=usuario.getId();
                 System.out.println(idUsuarioAutenticado);
 
-                buscarUsuario(idUsuarioAutenticado);
+                modelFactoryController.buscarUsuario(idUsuarioAutenticado);
             }
             // Verificar  empleado
             else if (empleado != null && contrasenia.equals(empleado.getContrasenia())) {
@@ -98,19 +98,8 @@ public class InicioSesionController {
         }
     }
 
-    // Método para buscar un usuario por su ID
-    private Usuario buscarUsuario(String id) {
-        for (Usuario u : modelFactoryController.obtenerUsuarios()) {
-            if (u.getId().equals(id)) {
-                UsuarioDto usuarioDto = new UsuarioDto(u.getId(), u.getNombre(), u.getCorreoElectronico());
-                // Agregar el UsuarioDto al ObservableList
-                usuariousuarioViewController.usuarioAutenticado.add(usuarioDto);
-                System.out.println(""+usuariousuarioViewController.usuarioAutenticado);
-                return u;
-            }
-        }
-        return null;
-    }
+
+
 
     // Método para buscar un empleado por su ID
     private Empleado buscarEmpleado(String id) {

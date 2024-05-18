@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.agencia20241.viewController.ReservaSoloUsuariosViewController">
+    <children>
+        <VBox alignment="CENTER" prefHeight="550.0" prefWidth="700.0" styleClass="color-blanco" stylesheets="@../../../../../../../../../../IdeaProjects/EjemploCrud/src/Estilo/style.css">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Reservas">
+                    <font>
+                        <Font name="Beautiful Lovina Regular" size="68.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="50.0" />
+                    </VBox.margin>
+                </Text>
+            <Button fx:id="btnRegresar" mnemonicParsing="false"  prefHeight="26.0" prefWidth="133.0" styleClass="button4" stylesheets="@style.css" text="Regresar" />
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="129.0" prefWidth="148.0">
+                            <children>
+                                <Button fx:id="btnRegresarEventos" mnemonicParsing="false"  prefHeight="26.0" prefWidth="133.0" styleClass="button4" stylesheets="@style.css" text="Reservar" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <HBox prefHeight="234.0" prefWidth="701.0">
+                    <children>
+                        <TableView fx:id="tabla" prefHeight="80.0" prefWidth="696.0" stylesheets="@style.css">
+                            <columns>
+                                <TableColumn fx:id="colEstado" prefWidth="93.85076797008514" text="Estado" />
+                                <TableColumn fx:id="colDescripcionEventos" prefWidth="102.44769287109375" text="Descripción" />
+                                <TableColumn fx:id="colHoraEventos" prefWidth="109.6119384765625" text="Hora" />
+                                <TableColumn fx:id="colUbicacionEventos" prefWidth="85.97015380859375" text="Ubicación" />
+                                <TableColumn fx:id="colCantidadMaximaEventos" prefWidth="144.00003051757812" text="Cantidad Máxima" />
+                                <TableColumn fx:id="colFechaEventos" prefWidth="164.776123046875" text="Fecha" />
+                            </columns>
+                            <HBox.margin>
+                                <Insets left="20.0" right="20.0" top="20.0" />
+                            </HBox.margin>
+                        </TableView>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>

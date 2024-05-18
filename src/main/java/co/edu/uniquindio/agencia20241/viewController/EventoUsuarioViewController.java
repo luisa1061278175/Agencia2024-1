@@ -1,9 +1,10 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
-import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
 import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
+import co.edu.uniquindio.agencia20241.model.Eventos;
 import co.edu.uniquindio.agencia20241.model.Reserva;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,13 +14,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Optional;
+import java.util.UUID;
 
 public class EventoUsuarioViewController {
 
     private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
     private ObservableList<EventoDto> listaEventosDto = FXCollections.observableArrayList();
+    private ObservableList<EventoDto> listaEventosReservas = FXCollections.observableArrayList();
+
+    private InicioSesionController inicioSesionController = new InicioSesionController();
     private EventoDto eventoSeleccionado;
 
     @FXML
@@ -59,25 +62,35 @@ public class EventoUsuarioViewController {
 
     @FXML
     private void initView() {
-        initDataBindig();
+        initDataBinding();
         obtenerEventos();
         tabla.getItems().clear();
-        tabla.setItems(listaEventosDto);
+        tabla.setItems(listaEventosReservas);
         listenerSelection();
     }
 
-    private void initDataBindig() {
+    private void initDataBinding() {
         colNombreEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().nombreEvento()));
         colDescripcionEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().descripcionEvento()));
-        colFechaEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().fechaEvento().toString()));
-        colHoraEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().horaEvento().toString()));
+        colFechaEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().fechaEvento()));
+        colHoraEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().horaEvento()));
         colUbicacionEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().ubicacionEvento()));
-        colCantidadMaximaEvento.setCellValueFactory(cell -> new SimpleStringProperty(Integer.toString(cell.getValue().capacidadMaximaEvento())));
-
+        colCantidadMaximaEvento.setCellValueFactory(cell -> new SimpleStringProperty(Integer.toString(getCapacidadMaxima(cell.getValue().nombreEvento()))));
+        colReservas.setCellValueFactory(cell -> new SimpleStringProperty(Integer.toString(cell.getValue().capacidadMaximaEvento())));
     }
 
     private void obtenerEventos() {
         listaEventosDto.addAll(AgenciaMapper.INSTANCE.getEventosDto(modelFactoryController.obtenerEventos()));
+        listaEventosReservas.addAll(listaEventosDto);
+    }
+
+    private int getCapacidadMaxima(String nombreEvento) {
+        for (EventoDto evento : listaEventosDto) {
+            if (evento.nombreEvento().equals(nombreEvento)) {
+                return evento.capacidadMaximaEvento();
+            }
+        }
+        return 0; // Valor predeterminado en caso de que no se encuentre el evento
     }
 
     private void listenerSelection() {
@@ -85,7 +98,13 @@ public class EventoUsuarioViewController {
             eventoSeleccionado = newSelection;
         });
     }
-    public void reservar(){
+
+    @FXML
+    public void reservar(ActionEvent event) {
+        reservar();
+    }
+
+    private void reservar() {
         if (eventoSeleccionado == null) {
             mostrarMensaje("Error", "No se ha seleccionado ningún evento.", "Por favor, seleccione un evento para reservar.", Alert.AlertType.ERROR);
             return;
@@ -110,31 +129,52 @@ public class EventoUsuarioViewController {
             return;
         }
 
-        int reservasDisponibles = eventoSeleccionado.capacidadMaximaEvento() - cantidadReservas;
+        int reservasDisponibles = eventoSeleccionado.capacidadMaximaEvento();
         if (cantidadReservas > reservasDisponibles) {
             mostrarMensaje("Error", "No hay suficientes reservas disponibles.", "La cantidad de reservas disponibles es: " + reservasDisponibles, Alert.AlertType.ERROR);
             return;
         }
 
+        // Actualizar las reservas del evento
+
+        int nuevasReservas = reservasDisponibles - cantidadReservas;
+        EventoDto eventoActualizado = new EventoDto(
+
+                eventoSeleccionado.nombreEvento(),
+                eventoSeleccionado.descripcionEvento(),
+                eventoSeleccionado.fechaEvento(),
+                eventoSeleccionado.horaEvento(),
+                nuevasReservas,
+                eventoSeleccionado.ubicacionEvento()
+        );
+
+        // Actualizar la lista observable de reservas
+        listaEventosReservas.set(listaEventosReservas.indexOf(eventoSeleccionado), eventoActualizado);
+
+        // Actualizar el objeto Evento correspondiente en el modelo
+
+        Eventos eventoOriginal = modelFactoryController.obtenerEvento(eventoSeleccionado.nombreEvento());
+        if (eventoOriginal != null) {
+            eventoOriginal.setCapacidadMaximaEvento(nuevasReservas);
+        }
+
+        tabla.refresh();
+        String idReserva = UUID.randomUUID().toString();
+
+
+        String usuarioId = inicioSesionController.idUsuarioAutenticado;
+
+        String estado = "p";
+
+        //creamos una nueva reserva
+
+        ReservaDto nuevaReserva = new ReservaDto(idReserva, eventoSeleccionado, modelFactoryController.buscarUsuario(usuarioId), LocalDate.now(), estado);
+        modelFactoryController.agregarReserva(nuevaReserva);
+
+        mostrarMensaje("Reserva Realizada", "Reserva realizada con éxito.", "Se han reservado " + cantidadReservas + " espacios para el evento " + eventoSeleccionado.nombreEvento() + ".", Alert.AlertType.CONFIRMATION);
+        txtCantidadReservas.setText("");
     }
 
-    @FXML
-    void reservar(ActionEvent event) {
-        reservar();
-
-//
-//        // Crear y guardar la reserva
-//        String usuarioId = "usuarioEjemplo"; // Obtener el ID del usuario autenticado
-//        Reserva nuevaReserva = new Reserva(usuarioId, eventoSeleccionado, cantidadReservas);
-//        modelFactoryController.agregarReserva(nuevaReserva);
-//
-//        // Actualizar las reservas del evento
-//        eventoSeleccionado.setReservas(eventoSeleccionado.reservas() + cantidadReservas);
-//        tabla.refresh();
-//
-//        mostrarMensaje("Reserva Exitosa", "Reserva realizada con éxito.", "Se han reservado " + cantidadReservas + " espacios para el evento " + eventoSeleccionado.nombreEvento() + ".", Alert.AlertType.INFORMATION);
-//    }
-    }
     private void mostrarMensaje(String titulo, String header, String contenido, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(titulo);

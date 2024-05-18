@@ -110,6 +110,9 @@ public class ModelFactoryController implements IAgenciaService {
         return agencia.obtenerEventos();
     }
 
+    public Usuario buscarUsuario(String id){
+        return agencia.buscarUsuario(id);
+    }
     @Override
     public List<Usuario> obtenerUsuarioId(String id) {
         return agencia.obtenerUsuarioId(id);
