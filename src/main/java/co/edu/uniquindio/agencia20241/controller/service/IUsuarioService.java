@@ -5,9 +5,10 @@ import co.edu.uniquindio.agencia20241.model.Empleado;
 import co.edu.uniquindio.agencia20241.model.Usuario;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IUsuarioService {
-    Usuario crearUsuario(String nombre, String id, String correoElectronico, String reservasRealizadas) throws EmpleadoException;
+    Usuario crearUsuario(String nombre, String id, String correoElectronico, List reservasRealizadas) throws EmpleadoException;
     boolean eliminarUsuario(String id) throws EmpleadoException;
     boolean actualizarUsuario(String cedulaActual, String nombre, String correo) throws EmpleadoException;
     boolean  verificarUsuarioExistente(String cedula) throws EmpleadoException;

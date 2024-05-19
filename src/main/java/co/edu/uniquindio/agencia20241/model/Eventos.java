@@ -11,16 +11,27 @@ public class Eventos {
     private String ubicacionEvento;
     private int capacidadMaximaEvento;
 
-    public Eventos(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) {
+    private String estado;
+
+    public Eventos(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento, String estado) {
         this.nombreEvento = nombreEvento;
         this.descripcionEvento = descripcionEvento;
         this.fechaEvento = fechaEvento;
         this.horaEvento = horaEvento;
         this.ubicacionEvento = ubicacionEvento;
         this.capacidadMaximaEvento = capacidadMaximaEvento;
+        this.estado= estado;
     }
 
     public Eventos() {
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getNombreEvento() {

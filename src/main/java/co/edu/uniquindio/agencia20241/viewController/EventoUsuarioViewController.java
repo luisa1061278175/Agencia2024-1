@@ -6,6 +6,7 @@ import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
 import co.edu.uniquindio.agencia20241.model.Eventos;
 import co.edu.uniquindio.agencia20241.model.Reserva;
+import co.edu.uniquindio.agencia20241.model.Usuario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +24,7 @@ public class EventoUsuarioViewController {
     private ObservableList<EventoDto> listaEventosReservas = FXCollections.observableArrayList();
 
     private InicioSesionController inicioSesionController = new InicioSesionController();
-    private EventoDto eventoSeleccionado;
+    public EventoDto eventoSeleccionado;
 
     @FXML
     private Button btnReservar;
@@ -101,10 +102,7 @@ public class EventoUsuarioViewController {
 
     @FXML
     public void reservar(ActionEvent event) {
-        reservar();
-    }
-
-    private void reservar() {
+        EventoDto eventoSeleccionado = tabla.getSelectionModel().getSelectedItem();
         if (eventoSeleccionado == null) {
             mostrarMensaje("Error", "No se ha seleccionado ningún evento.", "Por favor, seleccione un evento para reservar.", Alert.AlertType.ERROR);
             return;
@@ -136,10 +134,8 @@ public class EventoUsuarioViewController {
         }
 
         // Actualizar las reservas del evento
-
         int nuevasReservas = reservasDisponibles - cantidadReservas;
         EventoDto eventoActualizado = new EventoDto(
-
                 eventoSeleccionado.nombreEvento(),
                 eventoSeleccionado.descripcionEvento(),
                 eventoSeleccionado.fechaEvento(),
@@ -152,24 +148,32 @@ public class EventoUsuarioViewController {
         listaEventosReservas.set(listaEventosReservas.indexOf(eventoSeleccionado), eventoActualizado);
 
         // Actualizar el objeto Evento correspondiente en el modelo
-
         Eventos eventoOriginal = modelFactoryController.obtenerEvento(eventoSeleccionado.nombreEvento());
         if (eventoOriginal != null) {
             eventoOriginal.setCapacidadMaximaEvento(nuevasReservas);
         }
 
         tabla.refresh();
+
+        // Generar ID para la reserva
         String idReserva = UUID.randomUUID().toString();
 
-
+        // Obtener el ID del usuario autenticado
         String usuarioId = inicioSesionController.idUsuarioAutenticado;
+        Usuario usuario = modelFactoryController.buscarUsuario(usuarioId);
 
+        // Crear nueva Reserva y agregarla al modelo
         String estado = "p";
 
-        //creamos una nueva reserva
+        // Crear ReservaDto
+        ReservaDto reservaDto = new ReservaDto(idReserva, usuario, eventoOriginal, LocalDate.now(), estado);
 
-        ReservaDto nuevaReserva = new ReservaDto(idReserva, eventoSeleccionado, modelFactoryController.buscarUsuario(usuarioId), LocalDate.now(), estado);
-        modelFactoryController.agregarReserva(nuevaReserva);
+       // Reserva reserva = AgenciaMapper.INSTANCE.ReservaDtoToreserva(reservaDto);
+
+        // Añadir reserva a la lista del usuario
+//usuario.getListaReservas().add(reserva);
+
+        modelFactoryController.agregarReserva(idReserva, usuario, eventoOriginal, LocalDate.now(), estado);
 
         mostrarMensaje("Reserva Realizada", "Reserva realizada con éxito.", "Se han reservado " + cantidadReservas + " espacios para el evento " + eventoSeleccionado.nombreEvento() + ".", Alert.AlertType.CONFIRMATION);
         txtCantidadReservas.setText("");

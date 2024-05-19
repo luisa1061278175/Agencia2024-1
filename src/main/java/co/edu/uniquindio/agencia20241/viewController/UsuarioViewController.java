@@ -124,7 +124,7 @@ public class UsuarioViewController {
     private void crearUsuario() throws EmpleadoException {
         UsuarioDto usuarioDto = construirUsuarioDto();
         if(datosValidos(usuarioDto)){
-            if(modelFactoryController.crearUsuario(usuarioDto.nombre(), usuarioDto.id(), usuarioDto.correoElectronico(),null) != null){
+            if(modelFactoryController.crearUsuario(usuarioDto.nombre(), usuarioDto.id(), usuarioDto.correoElectronico(), null) != null){
                 listaUsuariosDto.add(usuarioDto);
                 mostrarMensaje("Notificación usuario", "Usuario creado", "El usuario se ha creado con éxito", Alert.AlertType.INFORMATION);
                 limpiarCamposUsuario();

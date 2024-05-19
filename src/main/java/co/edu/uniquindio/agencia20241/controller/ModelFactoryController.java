@@ -2,10 +2,12 @@ package co.edu.uniquindio.agencia20241.controller;
 
 import co.edu.uniquindio.agencia20241.controller.service.IAgenciaService;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
 import co.edu.uniquindio.agencia20241.model.*;
 import co.edu.uniquindio.agencia20241.utils.AgenciaUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class ModelFactoryController implements IAgenciaService {
     //USUARIO
 
     @Override
-    public Usuario crearUsuario(String nombre, String id, String correoElectronico, String eventosAsiganados) throws EmpleadoException {
+    public Usuario crearUsuario(String nombre, String id, String correoElectronico, List eventosAsiganados) throws EmpleadoException {
         return agencia.crearUsuario(nombre, id, correoElectronico, eventosAsiganados);
     }
 
@@ -113,6 +115,9 @@ public class ModelFactoryController implements IAgenciaService {
     public Usuario buscarUsuario(String id){
         return agencia.buscarUsuario(id);
     }
+
+
+
     @Override
     public List<Usuario> obtenerUsuarioId(String id) {
         return agencia.obtenerUsuarioId(id);
@@ -124,15 +129,23 @@ public class ModelFactoryController implements IAgenciaService {
 
         return agencia.validarUsuarioProperties(usuario, contrasena);
     }
+
+
+    //RESERVA
     @Override
-    public void agregarReserva(Reserva reserva) {
-        agencia.agregarReserva(reserva);
+    public void agregarReserva(String id, Usuario usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
+        agencia.agregarReserva( id,  usuario,  evento,  fechaSolicitud, estadoReserva);
     }
+
 
     @Override
     public ArrayList<Reserva> obtenerReservas() {
         return agencia.obtenerReservas();
     }
+
+
+    //METODOS ADICIONALES
+
 
 
     //------------------------------  Singleton ------------------------------------------------

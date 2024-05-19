@@ -1,29 +1,31 @@
 package co.edu.uniquindio.agencia20241.model;
 
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Usuario extends Persona {
-    private String reservasRealizadas;
+    private List<Reserva> listaReservas;
 
     private String contrasenia;
 
-    public Usuario(String nombre, String id, String correoElectronico, String reservasRealizadas, String contrasenia) {
+    public Usuario(String nombre, String id, String correoElectronico, List<Reserva> listaReservas, String contrasenia) {
         super(nombre, id, correoElectronico);
-        this.reservasRealizadas = reservasRealizadas;
+        this.listaReservas = listaReservas;
         this.contrasenia = contrasenia;
     }
-
     public Usuario(){
 
-
     }
 
-    public String getReservasRealizadas() {
-        return reservasRealizadas;
+    public List<Reserva> getListaReservas() {
+        return listaReservas;
     }
 
-    public void setReservasRealizadas(String reservasRealizadas) {
-        this.reservasRealizadas = reservasRealizadas;
+    public void setListaReservas(List<Reserva> listaReservas) {
+        this.listaReservas = listaReservas;
     }
 
     public String getContrasenia() {

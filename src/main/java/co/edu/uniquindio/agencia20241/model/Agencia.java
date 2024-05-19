@@ -6,6 +6,7 @@ import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.utils.Utils;
 import co.edu.uniquindio.agencia20241.viewController.UsuariousuarioViewController;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,23 +146,25 @@ public class Agencia implements IAgenciaService {
 
 
 
-    @Override
-    public Usuario crearUsuario(String nombre, String id, String correoElectronico, String reservasRealizadas) throws EmpleadoException {
-        Usuario usuario = null;
-        boolean usuarioExiste = verificarUsuarioExistente(id);
-        if(usuarioExiste){
-            throw new EmpleadoException("El Usuario con cedula: "+id+" ya existe");
-        }else{
-            usuario = new Usuario();
-            usuario.setNombre(nombre);
-            usuario.setId(id);
-            usuario.setCorreoElectronico(correoElectronico);
-            usuario.setReservasRealizadas(reservasRealizadas);
 
-            obtenerUsuarios().add(usuario);
+    @Override
+    public Usuario crearUsuario(String nombre, String id, String correoElectronico,List reservasRealizadas) throws EmpleadoException {
+            Usuario usuario = null;
+            boolean usuarioExiste = verificarUsuarioExistente(id);
+            if(usuarioExiste){
+                throw new EmpleadoException("El Usuario con cedula: "+id+" ya existe");
+            }else{
+                usuario = new Usuario();
+                usuario.setNombre(nombre);
+                usuario.setId(id);
+                usuario.setCorreoElectronico(correoElectronico);
+                usuario.setListaReservas(reservasRealizadas);
+
+                obtenerUsuarios().add(usuario);
+            }
+            return usuario;
         }
-        return usuario;
-    }
+
 
     @Override
     public boolean eliminarUsuario(String id) throws EmpleadoException {
@@ -249,7 +252,7 @@ public class Agencia implements IAgenciaService {
         if(eventoExiste){
             throw new EmpleadoException("El evento ya existe");
         } else {
-            nuevoEvento = new Eventos(nombreEvento, descripcionEvento, fechaEvento, horaEvento, ubicacionEvento, capacidadMaximaEvento);
+            nuevoEvento = new Eventos(nombreEvento, descripcionEvento, fechaEvento, horaEvento, ubicacionEvento, capacidadMaximaEvento,null);
             obtenerEventos().add(nuevoEvento);
         }
         return nuevoEvento;
@@ -336,9 +339,6 @@ public class Agencia implements IAgenciaService {
             return false;
         }}
 
-
-//reservas
-
     public Usuario buscarUsuario(String id) {
         for (Usuario u :obtenerUsuarios()) {
             if (u.getId().equals(id)) {
@@ -352,13 +352,28 @@ public class Agencia implements IAgenciaService {
         return null;
     }
 
+
+
+
+//reservas
+
+
     @Override
-public void agregarReserva(Reserva reserva) {
-    listaReservas.add(reserva);
-}
+public void agregarReserva(String id, Usuario usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
+        Reserva nuevaReserva = null;
+
+            nuevaReserva = new Reserva(id, usuario, evento, fechaSolicitud, estadoReserva);
+            obtenerReservas().add(nuevaReserva);
+
+    }
 @Override
     public ArrayList<Reserva> obtenerReservas() {
         return listaReservas;
+    }
+
+    public void buscarReserva(){
+
+
     }
 
 

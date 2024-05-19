@@ -8,8 +8,10 @@ import co.edu.uniquindio.agencia20241.model.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface IAgenciaService extends IEmpleadoControllerService,IUsuarioService,IEventoService{
+public interface IAgenciaService extends IEmpleadoControllerService,IUsuarioService,IEventoService,IReservasService{
 
+
+    Usuario crearUsuario(String nombre, String id, String correoElectronico, List reservasRealizadas) throws EmpleadoException;
 
     List<Usuario> obtenerUsuarioId(String id);
 
@@ -17,7 +19,5 @@ public interface IAgenciaService extends IEmpleadoControllerService,IUsuarioServ
     //validar datos para archivo properties
     boolean validarUsuarioProperties(String usuario, String contrasena);
 
-    void agregarReserva(Reserva reserva);
 
-    ArrayList<Reserva> obtenerReservas();
 }

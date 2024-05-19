@@ -29,7 +29,7 @@
                             <children>
                                 <SplitPane layoutX="6.0" layoutY="6.0" orientation="VERTICAL" prefHeight="542.0" prefWidth="790.0" style="-fx-background-color: ffffff;">
                                     <items>
-                                        <fx:include source="EventosUsuarios.fxml" />
+                                        <fx:include source="Reserva.fxml" />
                                     </items>
                                 </SplitPane>
                             </children>

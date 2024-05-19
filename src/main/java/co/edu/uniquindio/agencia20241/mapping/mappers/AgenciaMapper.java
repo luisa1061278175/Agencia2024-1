@@ -2,10 +2,11 @@ package co.edu.uniquindio.agencia20241.mapping.mappers;
 
 import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
 import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.model.Empleado;
-
 import co.edu.uniquindio.agencia20241.model.Eventos;
+import co.edu.uniquindio.agencia20241.model.Reserva;
 import co.edu.uniquindio.agencia20241.model.Usuario;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
@@ -13,7 +14,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -36,12 +36,11 @@ public interface AgenciaMapper {
     @IterableMapping(qualifiedByName = "cunetaToCuentaDto")
     EmpleadoDto clienteToClienteDto(Empleado empleado);
 
-    //USUARIOS
-
+    // USUARIOS
     @Named("usuarioToUsuarioDto")
     UsuarioDto usuarioToUsuarioDto(Usuario usuario);
 
-    Usuario usuarioToUsuarioDto(UsuarioDto usuarioDto);
+    Usuario usuarioDtoToUsuario(UsuarioDto usuarioDto);
 
     @IterableMapping(qualifiedByName = "usuarioToUsuarioDto")
     List<UsuarioDto> getUsuariosDto(List<Usuario> listaUsuarios);
@@ -49,8 +48,7 @@ public interface AgenciaMapper {
     @Named("mappingToUsuarioDto")
     UsuarioDto mappingToUsuarioDto(Usuario usuario);
 
-
-    //EVENTOS
+    // EVENTOS
     @Named("eventoToEventoDto")
     EventoDto eventoToEventoDto(Eventos eventos);
 
@@ -59,13 +57,22 @@ public interface AgenciaMapper {
     @IterableMapping(qualifiedByName = "eventoToEventoDto")
     List<EventoDto> getEventosDto(List<Eventos> listaEventos);
 
-//    @Mapping(target = "nombre", source = "usuario.nombre")
-//    @IterableMapping(qualifiedByName = "cunetaToCuentaDto")
-//    UsuarioDto clienteToClienteDto(Usuario usuario);
+    // RESERVAS
 
+    @Named("reservasToReservasDto")
+    ReservaDto reservasToReservasDto(Reserva reserva);
 
+    Reserva reservasToReservasDto(ReservaDto reservaDto);
 
+    @IterableMapping(qualifiedByName = "reservasToReservasDto")
+    List<ReservaDto> getReservasDto(List<Reserva> listaReservas);
+
+    @Named("mappingToReservasDto")
+    ReservaDto mappingToReservasDto(Reserva reserva);
+
+    @Mapping(target = "id", source = "reserva.id")
+    @IterableMapping(qualifiedByName = "cunetaToCuentaDto")
+    ReservaDto cunetaToCuentaDto(Reserva reserva);
 
 
 }
-

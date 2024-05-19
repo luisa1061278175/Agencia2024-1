@@ -16,7 +16,7 @@ public class AgenciaUtils {
         Agencia agencia = new Agencia();
 //USUARIO
 
-        Usuario usuario= new Usuario();
+        Usuario usuario = new Usuario();
 
         usuario.setId("00");
         usuario.setNombre("Maria");
@@ -26,7 +26,7 @@ public class AgenciaUtils {
         agencia.obtenerUsuarios().add(usuario);
 
 
-       usuario= new Usuario();
+        usuario = new Usuario();
 
         usuario.setId("12");
         usuario.setNombre("Sandra");
@@ -57,17 +57,26 @@ public class AgenciaUtils {
 
 //EVENTO
 
-        Eventos eventos= new Eventos();
+        Eventos eventos = new Eventos();
         eventos.setCapacidadMaximaEvento(100);
         eventos.setDescripcionEvento("Baile");
-        eventos.setFechaEvento("2023, 1, 30");
+        eventos.setFechaEvento("2023-1-30");
         eventos.setHoraEvento("02:43");
         eventos.setNombreEvento("Bailando ");
         eventos.setUbicacionEvento("Bolo Club");
 
-agencia.obtenerEventos().add(eventos);
+        agencia.obtenerEventos().add(eventos);
 
+        eventos = new Eventos();
 
+        eventos.setCapacidadMaximaEvento(500);
+        eventos.setDescripcionEvento("Bingo ");
+        eventos.setFechaEvento("2025-03-20");
+        eventos.setHoraEvento("09:20");
+        eventos.setNombreEvento("Bingo ");
+        eventos.setUbicacionEvento("Mocawa");
+
+        agencia.obtenerEventos().add(eventos);
 
 
         return agencia;
