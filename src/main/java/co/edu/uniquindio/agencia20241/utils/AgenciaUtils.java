@@ -1,9 +1,6 @@
 package co.edu.uniquindio.agencia20241.utils;
 
-import co.edu.uniquindio.agencia20241.model.Agencia;
-import co.edu.uniquindio.agencia20241.model.Empleado;
-import co.edu.uniquindio.agencia20241.model.Eventos;
-import co.edu.uniquindio.agencia20241.model.Usuario;
+import co.edu.uniquindio.agencia20241.model.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,71 +11,65 @@ public class AgenciaUtils {
     public static Agencia inicializarDatos() {
 
         Agencia agencia = new Agencia();
-//USUARIO
 
+        // Crear un usuario
         Usuario usuario = new Usuario();
-
         usuario.setId("00");
         usuario.setNombre("Maria");
         usuario.setCorreoElectronico("Maria@gmail");
         usuario.setContrasenia("00");
-
         agencia.obtenerUsuarios().add(usuario);
 
 
+        // Crear un usuario
         usuario = new Usuario();
-
-        usuario.setId("12");
-        usuario.setNombre("Sandra");
-        usuario.setCorreoElectronico("Sandra@gmail");
-        usuario.setContrasenia("12");
-
+        usuario.setId("11");
+        usuario.setNombre("Juana");
+        usuario.setCorreoElectronico("Juana@gmail");
+        usuario.setContrasenia("11");
         agencia.obtenerUsuarios().add(usuario);
 
-
-        //EMPLEADO
-
+        // Crear un empleado
         Empleado empleado = new Empleado();
         empleado.setNombre("juan");
         empleado.setCorreoElectronico("juan@");
         empleado.setId("123");
         empleado.setEventosAsiganados("Cocina");
         empleado.setContrasenia("123");
-
         agencia.obtenerEmpleados().add(empleado);
 
-        empleado = new Empleado();
-        empleado.setNombre("nicolas");
-        empleado.setCorreoElectronico("nicolas@");
-        empleado.setId("456");
-        empleado.setEventosAsiganados("Cocina");
+        // Crear un evento
+        Eventos evento = new Eventos();
+        evento.setCapacidadMaximaEvento(100);
+        evento.setDescripcionEvento("Baile");
+        evento.setFechaEvento("2023-01-30");
+        evento.setHoraEvento("02:43");
+        evento.setNombreEvento("Bailando");
+        evento.setUbicacionEvento("Bolo Club");
+        agencia.obtenerEventos().add(evento);
 
-        agencia.obtenerEmpleados().add(empleado);
 
-//EVENTO
+        Reserva reserva = new Reserva();
+        reserva.setEstadoReserva("Aceptado");
+        reserva.setId("121");
+        reserva.setFechaSolicitud(LocalDate.now());
 
-        Eventos eventos = new Eventos();
-        eventos.setCapacidadMaximaEvento(100);
-        eventos.setDescripcionEvento("Baile");
-        eventos.setFechaEvento("2023-1-30");
-        eventos.setHoraEvento("02:43");
-        eventos.setNombreEvento("Bailando ");
-        eventos.setUbicacionEvento("Bolo Club");
+        // Crear un nuevo evento para poder enviarle el nombre
+        Eventos eventoReserva = new Eventos();
+        eventoReserva.setNombreEvento("Tango");
 
-        agencia.obtenerEventos().add(eventos);
+        //crear un nuevo usuario para poder enviarle el id
+        Usuario idUsuario= new Usuario();
+        idUsuario.setId("10928");
 
-        eventos = new Eventos();
+        // Establecer el evento en la reserva
+        reserva.setEvento(eventoReserva);
+        reserva.setUsuario(idUsuario);
 
-        eventos.setCapacidadMaximaEvento(500);
-        eventos.setDescripcionEvento("Bingo ");
-        eventos.setFechaEvento("2025-03-20");
-        eventos.setHoraEvento("09:20");
-        eventos.setNombreEvento("Bingo ");
-        eventos.setUbicacionEvento("Mocawa");
-
-        agencia.obtenerEventos().add(eventos);
-
+        // Agregar la reserva a la lista de reservas de la agencia
+        agencia.obtenerReservas().add(reserva);
 
         return agencia;
     }
+
 }

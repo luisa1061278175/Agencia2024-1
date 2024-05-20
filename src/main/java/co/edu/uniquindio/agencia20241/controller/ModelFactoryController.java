@@ -2,6 +2,8 @@ package co.edu.uniquindio.agencia20241.controller;
 
 import co.edu.uniquindio.agencia20241.controller.service.IAgenciaService;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.EventoException;
+import co.edu.uniquindio.agencia20241.exception.UsuarioException;
 import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
 import co.edu.uniquindio.agencia20241.model.*;
@@ -49,22 +51,22 @@ public class ModelFactoryController implements IAgenciaService {
     //USUARIO
 
     @Override
-    public Usuario crearUsuario(String nombre, String id, String correoElectronico, List eventosAsiganados) throws EmpleadoException {
+    public Usuario crearUsuario(String nombre, String id, String correoElectronico, List eventosAsiganados) throws UsuarioException {
         return agencia.crearUsuario(nombre, id, correoElectronico, eventosAsiganados);
     }
 
     @Override
-    public boolean eliminarUsuario(String id) throws EmpleadoException {
+    public boolean eliminarUsuario(String id) throws UsuarioException {
         return agencia.eliminarUsuario(id);
     }
 
     @Override
-    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo) throws EmpleadoException {
+    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo) throws UsuarioException {
         return agencia.actualizarUsuario(nombre, cedulaActual, correo);
     }
 
     @Override
-    public boolean verificarUsuarioExistente(String cedula) throws EmpleadoException {
+    public boolean verificarUsuarioExistente(String cedula) throws UsuarioException {
         return agencia.verificarUsuarioExistente(cedula);
     }
 
@@ -83,22 +85,22 @@ public class ModelFactoryController implements IAgenciaService {
 
 
     @Override
-    public Eventos crearEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
+    public Eventos crearEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EventoException {
         return null;
     }
 
     @Override
-    public boolean eliminarEvento(String nombre) throws EmpleadoException {
+    public boolean eliminarEvento(String nombre) throws EventoException {
         return agencia.eliminarEvento(nombre);
     }
 
     @Override
-    public boolean actualizarEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EmpleadoException {
+    public boolean actualizarEvento(String nombreEvento, String descripcionEvento, String fechaEvento, String horaEvento, String ubicacionEvento, int capacidadMaximaEvento) throws EventoException {
         return agencia.actualizarEvento(nombreEvento, descripcionEvento, fechaEvento, horaEvento, ubicacionEvento, capacidadMaximaEvento);
     }
 
     @Override
-    public boolean verificarEventoExistente(String nombre) throws EmpleadoException {
+    public boolean verificarEventoExistente(String nombre) throws EventoException {
         return agencia.verificarEventoExistente(nombre);
     }
 
@@ -137,10 +139,14 @@ public class ModelFactoryController implements IAgenciaService {
         agencia.agregarReserva( id,  usuario,  evento,  fechaSolicitud, estadoReserva);
     }
 
-
     @Override
     public ArrayList<Reserva> obtenerReservas() {
+
         return agencia.obtenerReservas();
+    }
+
+    public List<ReservaDto> obtenerReservasDto(){
+        return agencia.obtenerReservasDto();
     }
 
 

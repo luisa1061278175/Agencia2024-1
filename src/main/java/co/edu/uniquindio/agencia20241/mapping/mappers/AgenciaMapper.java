@@ -21,6 +21,9 @@ public interface AgenciaMapper {
 
     AgenciaMapper INSTANCE = Mappers.getMapper(AgenciaMapper.class);
 
+    //EMPLEADOS
+
+
     @Named("empleadoToEmpleadoDto")
     EmpleadoDto empleadoToEmpleadoDto(Empleado empleado);
 
@@ -73,6 +76,7 @@ public interface AgenciaMapper {
     @Mapping(target = "id", source = "reserva.id")
     @IterableMapping(qualifiedByName = "cunetaToCuentaDto")
     ReservaDto cunetaToCuentaDto(Reserva reserva);
+
 
 
 }

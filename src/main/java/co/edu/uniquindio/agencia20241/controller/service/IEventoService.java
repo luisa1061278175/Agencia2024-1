@@ -1,6 +1,6 @@
 package co.edu.uniquindio.agencia20241.controller.service;
 
-import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.*;
 import co.edu.uniquindio.agencia20241.model.Eventos;
 import co.edu.uniquindio.agencia20241.model.Usuario;
 
@@ -15,15 +15,15 @@ public interface IEventoService {
                         String fechaEvento,
                         String horaEvento,
                         String ubicacionEvento,
-                        int capacidadMaximaEvento) throws EmpleadoException;
-    boolean eliminarEvento(String nombre) throws EmpleadoException;
+                        int capacidadMaximaEvento) throws EventoException;
+    boolean eliminarEvento(String nombre) throws EventoException;
     boolean actualizarEvento(String nombreEvento,
                              String descripcionEvento,
                              String fechaEvento,
                              String horaEvento,
                              String ubicacionEvento,
-                             int capacidadMaximaEvento) throws EmpleadoException;
-    boolean  verificarEventoExistente(String nombre) throws EmpleadoException;
+                             int capacidadMaximaEvento) throws EventoException;
+    boolean  verificarEventoExistente(String nombre) throws EventoException;
     Eventos obtenerEvento(String nombre);
     ArrayList<Eventos> obtenerEventos();
 }

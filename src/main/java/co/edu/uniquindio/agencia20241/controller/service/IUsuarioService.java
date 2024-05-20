@@ -1,6 +1,6 @@
 package co.edu.uniquindio.agencia20241.controller.service;
 
-import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.*;
 import co.edu.uniquindio.agencia20241.model.Empleado;
 import co.edu.uniquindio.agencia20241.model.Usuario;
 
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IUsuarioService {
-    Usuario crearUsuario(String nombre, String id, String correoElectronico, List reservasRealizadas) throws EmpleadoException;
-    boolean eliminarUsuario(String id) throws EmpleadoException;
-    boolean actualizarUsuario(String cedulaActual, String nombre, String correo) throws EmpleadoException;
-    boolean  verificarUsuarioExistente(String cedula) throws EmpleadoException;
+    Usuario crearUsuario(String nombre, String id, String correoElectronico, List reservasRealizadas) throws UsuarioException;
+    boolean eliminarUsuario(String id) throws UsuarioException;
+    boolean actualizarUsuario(String cedulaActual, String nombre, String correo) throws UsuarioException;
+    boolean  verificarUsuarioExistente(String cedula) throws UsuarioException;
     Usuario obtenerUsuario(String cedula);
     ArrayList<Usuario> obtenerUsuarios();
 }

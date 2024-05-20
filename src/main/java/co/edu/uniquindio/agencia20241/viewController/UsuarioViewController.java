@@ -2,6 +2,7 @@ package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.UsuarioException;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -106,22 +107,22 @@ public class UsuarioViewController {
     }
 
     @FXML
-    void agregarUsuarioAction(ActionEvent event) throws EmpleadoException {
+    void agregarUsuarioAction(ActionEvent event) throws UsuarioException {
         crearUsuario();
     }
 
     @FXML
-    void eliminarUsuarioAction(ActionEvent event) throws EmpleadoException {
+    void eliminarUsuarioAction(ActionEvent event) throws UsuarioException {
         eliminarUsuario();
     }
 
     @FXML
-    void actualizarUsuarioAction(ActionEvent event) throws EmpleadoException {
+    void actualizarUsuarioAction(ActionEvent event) throws UsuarioException {
         actualizarUsuario();
     }
 
     @FXML
-    private void crearUsuario() throws EmpleadoException {
+    private void crearUsuario() throws UsuarioException {
         UsuarioDto usuarioDto = construirUsuarioDto();
         if(datosValidos(usuarioDto)){
             if(modelFactoryController.crearUsuario(usuarioDto.nombre(), usuarioDto.id(), usuarioDto.correoElectronico(), null) != null){
@@ -137,7 +138,7 @@ public class UsuarioViewController {
     }
 
     @FXML
-    private void eliminarUsuario() throws EmpleadoException {
+    private void eliminarUsuario() throws UsuarioException {
         boolean usuarioEliminado = false;
         if(usuarioSeleccionado != null){
             if(mostrarMensajeConfirmacion("¿Estás seguro de eliminar al usuario?")){
@@ -158,7 +159,7 @@ public class UsuarioViewController {
     }
 
     @FXML
-    private void actualizarUsuario() throws EmpleadoException {
+    private void actualizarUsuario() throws UsuarioException {
         boolean usuarioActualizado = false;
         String idActual = usuarioSeleccionado.id();
         UsuarioDto usuarioDto = construirUsuarioDto();

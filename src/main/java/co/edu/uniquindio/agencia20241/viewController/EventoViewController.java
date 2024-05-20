@@ -2,6 +2,7 @@ package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.EventoException;
 import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -131,22 +132,22 @@ public class EventoViewController {
     }
 
     @FXML
-    void agregarEventoAction(ActionEvent event) throws EmpleadoException {
+    void agregarEventoAction(ActionEvent event) throws EventoException {
         crearEvento();
     }
 
     @FXML
-    void eliminarEventoAction(ActionEvent event) throws EmpleadoException {
+    void eliminarEventoAction(ActionEvent event) throws EventoException {
         eliminarEvento();
     }
 
     @FXML
-    void actualizarEventoAction(ActionEvent event) throws EmpleadoException {
+    void actualizarEventoAction(ActionEvent event) throws EventoException {
         actualizarEvento();
     }
 
     @FXML
-    private void crearEvento() throws EmpleadoException {
+    private void crearEvento() throws EventoException {
         // 1. Capturar los datos
         EventoDto eventoDto = construirEventoDto();
         // 2. Validar la información
@@ -163,7 +164,7 @@ public class EventoViewController {
         }
     }
 
-    private void eliminarEvento() throws EmpleadoException {
+    private void eliminarEvento() throws EventoException {
         boolean eventoEliminado = false;
         if (eventoSeleccionado != null) {
             if (mostrarMensajeConfirmacion("¿Estás seguro de eliminar el evento?")) {
@@ -183,7 +184,7 @@ public class EventoViewController {
         }
     }
 
-    private void actualizarEvento() throws EmpleadoException {
+    private void actualizarEvento() throws EventoException {
         boolean eventoActualizado = false;
         // 1. Capturar los datos
         String nombreEventoActual = eventoSeleccionado.nombreEvento();

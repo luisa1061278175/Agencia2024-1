@@ -1,116 +1,72 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
-
-import javafx.application.Application;
+import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
+import co.edu.uniquindio.agencia20241.model.Reserva;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-public class EstadoReservaViewController extends Application implements Initializable {
+public class EstadoReservaViewController {
 
-
-
-    @FXML
-    private Button btnAgregarEventos;
+    private ModelFactoryController modelFactoryController = new ModelFactoryController();
+    private InicioSesionController inicioSesionController= new InicioSesionController();
+    private ReservaViewController reservaViewController= new ReservaViewController();
+    private Reserva reserva= new Reserva();
 
     @FXML
-    private Button btnEliminarEventos;
+    private TableView<ReservaDto> tabla;
 
     @FXML
-    private Button btnModificarEventos;
+    private TableColumn<ReservaDto, String> colEstado;
 
     @FXML
-    private Button btnRegresarEventos;
+    private TableColumn<ReservaDto, String> colNombreEvento;
 
     @FXML
-    private TableColumn<?, ?> colCantidadMaximaEventos;
+    private TableColumn<ReservaDto, String> colIdUsuario;
 
     @FXML
-    private TableColumn<?, ?> colDescripcionEventos;
+    private TableColumn<ReservaDto, String> colIdReserva;
 
     @FXML
-    private TableColumn<?, ?> colEstado;
+    private TableColumn<ReservaDto, String> colFechaSolicitud;
 
     @FXML
-    private TableColumn<?, ?> colFechaEventos;
+    void initialize() {
+        initView();
+    }
 
-    @FXML
-    private TableColumn<?, ?> colHoraEventos;
+    private void initView() {
+        initDataBinding();
+        cargarReservasEnTabla();
+    }
 
-    @FXML
-    private TableColumn<?, ?> colUbicacionEventos;
+    private void initDataBinding() {
+        colEstado.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().estadoReserva()));
+        colNombreEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().evento().getNombreEvento()));
 
-    @FXML
-    private TableView<?> tabla;
-
-    @FXML
-    private TextField txtCantidadMaximaEventos;
-
-    @FXML
-    private TextField txtFechaEventos;
-
-    @FXML
-    private TextField txtHoraEventos;
-
-    @FXML
-    private TextField txtIdentificacionEventos;
-
-    @FXML
-    private TextField txtNombreEventos;
-
-    @FXML
-    private TextField txtUbicacionEventos;
+        colIdReserva.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().id()));
+        colFechaSolicitud.setCellValueFactory(cell -> {
+            String fechaSolicitud = cell.getValue().fechaSolicitud().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            return new SimpleStringProperty(fechaSolicitud);
+        });
 
 
-    @Override
-    public void start(Stage stage) throws Exception {
-
-
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ReservaEstado.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, 700, 550);
-        stage = new Stage();
-        URL url = getClass().getResource("\\src\\main\\resources\\co\\edu\\uniquindio\\reservasevento");
-
-        stage.setScene(scene);
-        stage.setTitle("Evento!");
-        stage.show();
+        colIdUsuario.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().usuario().getId()));
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-    @FXML
-    public void eliminar(){
-
-
-    }
-
-    @FXML
-    public void agregar(){
-
-
-    }
-    @FXML
-    public void modificar(){
-
-
-    }
-    @FXML
-    public void regresar(){
-
-
+    private void cargarReservasEnTabla() {
+        List<ReservaDto> reservas = modelFactoryController.obtenerReservasDto();
+        ObservableList<ReservaDto> listaReservasDto = FXCollections.observableArrayList(reservas);
+        tabla.setItems(listaReservasDto);
     }
 }

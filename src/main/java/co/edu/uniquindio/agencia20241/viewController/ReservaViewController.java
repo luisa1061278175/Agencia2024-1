@@ -2,9 +2,15 @@ package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.EventoException;
+import co.edu.uniquindio.agencia20241.exception.ReservaException;
+import co.edu.uniquindio.agencia20241.exception.UsuarioException;
+import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
 import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
 import co.edu.uniquindio.agencia20241.model.Eventos;
+import co.edu.uniquindio.agencia20241.model.Reserva;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,9 +26,11 @@ import java.util.UUID;
 public class ReservaViewController extends Application {
 
     private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
-    private ObservableList<EventoDto> listaEventosDto = FXCollections.observableArrayList();
+    public ObservableList<EventoDto> listaEventosDto = FXCollections.observableArrayList();
+    private ObservableList<ReservaDto> listaReservasDto = FXCollections.observableArrayList();
     private EventoDto eventoSeleccionado;
     private InicioSesionController inicioSesionController = new InicioSesionController();
+
 
     @FXML
     private Button btnReservar;
@@ -82,11 +90,11 @@ public class ReservaViewController extends Application {
     }
 
     @FXML
-    private void reservar(ActionEvent event) throws EmpleadoException {
+    private void reservar(ActionEvent event) throws ReservaException,EventoException {
         crearReserva();
     }
 
-    private void crearReserva() throws EmpleadoException {
+    private void crearReserva() throws ReservaException, EventoException {
         if (eventoSeleccionado == null) {
             mostrarMensaje("Error", "No se ha seleccionado ningún evento.", "Por favor, seleccione un evento para reservar.", Alert.AlertType.ERROR);
             return;
@@ -126,14 +134,23 @@ public class ReservaViewController extends Application {
         }
 
         // Se debe mapear para poder enviar un evento de tipo Evento y no de tipo EventoDto
+
         Eventos evento = AgenciaMapper.INSTANCE.eventoDtoToEvento(eventoSeleccionado);
 
         modelFactoryController.agregarReserva(idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas));
 
+
+        ReservaDto reservaDto=construirReservaDto( idReserva,usuarioId, evento, cantidadReservas);
+
+        listaReservasDto.add(reservaDto);
+
+        System.out.println();
         // Eliminar el evento antiguo
+
         modelFactoryController.eliminarEvento(evento.getNombreEvento());
 
         // Crear un nuevo evento con la capacidad actualizada
+
         evento.setCapacidadMaximaEvento(evento.getCapacidadMaximaEvento() - cantidadReservas);
         modelFactoryController.crearEvento(evento.getNombreEvento(), evento.getDescripcionEvento(), evento.getFechaEvento(), evento.getHoraEvento(), evento.getUbicacionEvento(), evento.getCapacidadMaximaEvento());
 
@@ -167,8 +184,16 @@ public class ReservaViewController extends Application {
         alerta.showAndWait();
     }
 
+    private ReservaDto construirReservaDto(String idReserva,String usuarioId,Eventos evento, int cantidadReservas) {
+
+        return new ReservaDto(
+                idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas
+        ));
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        // Código para iniciar la aplicación JavaFX, si es necesario
+
+
     }
 }

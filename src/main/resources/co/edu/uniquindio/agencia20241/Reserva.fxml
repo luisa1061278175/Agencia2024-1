@@ -38,11 +38,11 @@
                 </HBox>
                 <TableView fx:id="tabla" prefHeight="201.0" prefWidth="651.0" stylesheets="@style.css">
                     <columns>
-                        <TableColumn fx:id="colDescripcionEventos" prefWidth="95.99996185302734" text="Descripción" />
-                        <TableColumn fx:id="colFechaEventos" prefWidth="83.10453796386719" text="Fecha" />
-                        <TableColumn fx:id="colHoraEventos" prefWidth="85.25372314453125" text="Hora" />
-                        <TableColumn fx:id="colUbicacionEventos" prefWidth="84.53729248046875" text="Ubicación" />
-                        <TableColumn fx:id="colCantidadMaximaEventos" prefWidth="117.4925537109375" text="Cantidad Max" />
+                        <TableColumn fx:id="colDescripcionEventos" prefWidth="138.26867192983627" text="Descripción" />
+                        <TableColumn fx:id="colFechaEventos" prefWidth="102.44770812988281" text="Fecha" />
+                        <TableColumn fx:id="colHoraEventos" prefWidth="118.20899963378906" text="Hora" />
+                        <TableColumn fx:id="colUbicacionEventos" prefWidth="134.68655395507812" text="Ubicación" />
+                        <TableColumn fx:id="colCantidadMaximaEventos" prefWidth="171.9403076171875" text="Cantidad Max" />
                     </columns>
                     <VBox.margin>
                         <Insets left="20.0" right="20.0" />

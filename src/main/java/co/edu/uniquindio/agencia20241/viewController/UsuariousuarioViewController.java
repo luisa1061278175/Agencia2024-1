@@ -2,8 +2,10 @@ package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.UsuarioException;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
+import co.edu.uniquindio.agencia20241.model.Usuario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -118,18 +120,18 @@ public class UsuariousuarioViewController {
 
 
     @FXML
-    void eliminarUsuarioAction(ActionEvent event) throws EmpleadoException {
+    void eliminarUsuarioAction(ActionEvent event) throws UsuarioException {
         eliminarUsuario();
     }
 
     @FXML
-    void actualizarUsuarioAction(ActionEvent event) throws EmpleadoException {
+    void actualizarUsuarioAction(ActionEvent event) throws UsuarioException {
         actualizarUsuario();
     }
 
 
     @FXML
-    private void eliminarUsuario() throws EmpleadoException {
+    private void eliminarUsuario() throws UsuarioException {
         boolean usuarioEliminado = false;
         if(usuarioSeleccionado != null){
             if(mostrarMensajeConfirmacion("¿Estás seguro de eliminar al usuario?")){
@@ -150,7 +152,7 @@ public class UsuariousuarioViewController {
     }
 
     @FXML
-    private void actualizarUsuario() throws EmpleadoException {
+    private void actualizarUsuario() throws UsuarioException {
         boolean usuarioActualizado = false;
         String idActual = usuarioSeleccionado.id();
         UsuarioDto usuarioDto = construirUsuarioDto();

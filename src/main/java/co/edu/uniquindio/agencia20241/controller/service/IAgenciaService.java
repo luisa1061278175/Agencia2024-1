@@ -1,6 +1,7 @@
 package co.edu.uniquindio.agencia20241.controller.service;
 
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
+import co.edu.uniquindio.agencia20241.exception.UsuarioException;
 import co.edu.uniquindio.agencia20241.model.Empleado;
 import co.edu.uniquindio.agencia20241.model.Reserva;
 import co.edu.uniquindio.agencia20241.model.Usuario;
@@ -10,8 +11,6 @@ import java.util.List;
 
 public interface IAgenciaService extends IEmpleadoControllerService,IUsuarioService,IEventoService,IReservasService{
 
-
-    Usuario crearUsuario(String nombre, String id, String correoElectronico, List reservasRealizadas) throws EmpleadoException;
 
     List<Usuario> obtenerUsuarioId(String id);
 
