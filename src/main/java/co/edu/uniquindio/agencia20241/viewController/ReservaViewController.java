@@ -1,5 +1,6 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
+import co.edu.uniquindio.agencia20241.controller.ControllerManager; // Asegúrate de importar esto
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
 import co.edu.uniquindio.agencia20241.exception.EventoException;
@@ -26,11 +27,12 @@ import java.util.UUID;
 public class ReservaViewController extends Application {
 
     private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
+    private ControllerManager controllerManager = ControllerManager.getInstance(); // Añadido
+
     public ObservableList<EventoDto> listaEventosDto = FXCollections.observableArrayList();
     private ObservableList<ReservaDto> listaReservasDto = FXCollections.observableArrayList();
     private EventoDto eventoSeleccionado;
     private InicioSesionController inicioSesionController = new InicioSesionController();
-
 
     @FXML
     private Button btnReservar;
@@ -90,7 +92,7 @@ public class ReservaViewController extends Application {
     }
 
     @FXML
-    private void reservar(ActionEvent event) throws ReservaException,EventoException {
+    private void reservar(ActionEvent event) throws ReservaException, EventoException {
         crearReserva();
     }
 
@@ -134,23 +136,21 @@ public class ReservaViewController extends Application {
         }
 
         // Se debe mapear para poder enviar un evento de tipo Evento y no de tipo EventoDto
-
         Eventos evento = AgenciaMapper.INSTANCE.eventoDtoToEvento(eventoSeleccionado);
 
         modelFactoryController.agregarReserva(idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas));
 
+        ReservaDto reservaDto = construirReservaDto(idReserva, usuarioId, evento, cantidadReservas);
 
-        ReservaDto reservaDto=construirReservaDto( idReserva,usuarioId, evento, cantidadReservas);
+        // Añadir la reserva al ControllerManager
+        controllerManager.addReserva(reservaDto);
 
         listaReservasDto.add(reservaDto);
 
-        System.out.println();
         // Eliminar el evento antiguo
-
         modelFactoryController.eliminarEvento(evento.getNombreEvento());
 
         // Crear un nuevo evento con la capacidad actualizada
-
         evento.setCapacidadMaximaEvento(evento.getCapacidadMaximaEvento() - cantidadReservas);
         modelFactoryController.crearEvento(evento.getNombreEvento(), evento.getDescripcionEvento(), evento.getFechaEvento(), evento.getHoraEvento(), evento.getUbicacionEvento(), evento.getCapacidadMaximaEvento());
 
@@ -184,16 +184,14 @@ public class ReservaViewController extends Application {
         alerta.showAndWait();
     }
 
-    private ReservaDto construirReservaDto(String idReserva,String usuarioId,Eventos evento, int cantidadReservas) {
-
+    private ReservaDto construirReservaDto(String idReserva, String usuarioId, Eventos evento, int cantidadReservas) {
         return new ReservaDto(
-                idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas
-        ));
+                idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas)
+        );
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-
+        // Tu implementación de start
     }
 }

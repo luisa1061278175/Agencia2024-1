@@ -158,7 +158,7 @@ public class UsuariousuarioViewController {
         UsuarioDto usuarioDto = construirUsuarioDto();
         if(usuarioSeleccionado != null){
             if(datosValidos(usuarioDto)){
-                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(),usuarioDto.id() , usuarioDto.correoElectronico());
+                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(),usuarioDto.id() , usuarioDto.correoElectronico(),usuarioDto.contrasenia());
                 if(usuarioActualizado){
                     listaUsuariosDto.remove(usuarioSeleccionado);
                     listaUsuariosDto.add(usuarioDto);
@@ -178,7 +178,8 @@ public class UsuariousuarioViewController {
         return new UsuarioDto(
                 txtCorreoUsuario.getText(),
                 txtIdentificacionUsuario.getText(),
-                txtNombreUsuario.getText()
+                txtNombreUsuario.getText(),
+                "*****"
         );
     }
 

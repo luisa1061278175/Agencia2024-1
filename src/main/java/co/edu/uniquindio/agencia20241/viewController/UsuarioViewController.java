@@ -19,7 +19,6 @@ public class UsuarioViewController {
     private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
     private ObservableList<UsuarioDto> listaUsuariosDto= FXCollections.observableArrayList();
     private UsuarioDto usuarioSeleccionado;
-
     @FXML
     private Button btnAgregarUsuario;
 
@@ -125,7 +124,7 @@ public class UsuarioViewController {
     private void crearUsuario() throws UsuarioException {
         UsuarioDto usuarioDto = construirUsuarioDto();
         if(datosValidos(usuarioDto)){
-            if(modelFactoryController.crearUsuario(usuarioDto.nombre(), usuarioDto.id(), usuarioDto.correoElectronico(), null) != null){
+            if(modelFactoryController.crearUsuario(usuarioDto.nombre(), usuarioDto.id(), usuarioDto.correoElectronico(), null,usuarioDto.contrasenia()) != null){
                 listaUsuariosDto.add(usuarioDto);
                 mostrarMensaje("Notificación usuario", "Usuario creado", "El usuario se ha creado con éxito", Alert.AlertType.INFORMATION);
                 limpiarCamposUsuario();
@@ -165,7 +164,7 @@ public class UsuarioViewController {
         UsuarioDto usuarioDto = construirUsuarioDto();
         if(usuarioSeleccionado != null){
             if(datosValidos(usuarioDto)){
-                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(),usuarioDto.id() , usuarioDto.correoElectronico());
+                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(),usuarioDto.id() , usuarioDto.correoElectronico(),usuarioDto.contrasenia());
                 if(usuarioActualizado){
                     listaUsuariosDto.remove(usuarioSeleccionado);
                     listaUsuariosDto.add(usuarioDto);
@@ -185,7 +184,8 @@ public class UsuarioViewController {
         return new UsuarioDto(
                 txtCorreoUsuario.getText(),
                 txtIdentificacionUsuario.getText(),
-                txtNombreUsuario.getText()
+                txtNombreUsuario.getText(),
+                "********"
         );
     }
 

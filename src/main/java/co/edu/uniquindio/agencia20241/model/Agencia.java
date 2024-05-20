@@ -151,7 +151,7 @@ public class Agencia implements IAgenciaService {
 
 
 
-    public Usuario crearUsuario(String nombre, String id, String correoElectronico,List reservasRealizadas) throws UsuarioException {
+    public Usuario crearUsuario(String nombre, String id, String correoElectronico,List reservasRealizadas,String contrasenia) throws UsuarioException {
             Usuario usuario = null;
             boolean usuarioExiste = verificarUsuarioExistente(id);
             if(usuarioExiste){
@@ -162,6 +162,7 @@ public class Agencia implements IAgenciaService {
                 usuario.setId(id);
                 usuario.setCorreoElectronico(correoElectronico);
                 usuario.setListaReservas(reservasRealizadas);
+                usuario.setContrasenia(contrasenia);;
 
                 obtenerUsuarios().add(usuario);
             }
@@ -184,7 +185,7 @@ public class Agencia implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo) throws UsuarioException {
+    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo,String contrasenia) throws UsuarioException {
         Usuario usuario = obtenerUsuario(cedulaActual);
         if(usuario == null) {
             throw new UsuarioException("El usuario a actualizar no existe");
@@ -193,6 +194,7 @@ public class Agencia implements IAgenciaService {
             usuario.setNombre(nombre);
             usuario.setId(cedulaActual);
             usuario.setCorreoElectronico(correo);
+            usuario.setContrasenia(contrasenia);
             return true;
         }
     }
@@ -345,7 +347,7 @@ public class Agencia implements IAgenciaService {
     public Usuario buscarUsuario(String id) {
         for (Usuario u :obtenerUsuarios()) {
             if (u.getId().equals(id)) {
-                UsuarioDto usuarioDto = new UsuarioDto(u.getId(), u.getNombre(), u.getCorreoElectronico());
+                UsuarioDto usuarioDto = new UsuarioDto(u.getId(), u.getNombre(), u.getCorreoElectronico(),u.getContrasenia());
                 // Agregar el UsuarioDto al ObservableList
                 usuariousuarioViewController.usuarioAutenticado.add(usuarioDto);
                 System.out.println(""+usuariousuarioViewController.usuarioAutenticado);

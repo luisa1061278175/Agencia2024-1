@@ -51,8 +51,8 @@ public class ModelFactoryController implements IAgenciaService {
     //USUARIO
 
     @Override
-    public Usuario crearUsuario(String nombre, String id, String correoElectronico, List eventosAsiganados) throws UsuarioException {
-        return agencia.crearUsuario(nombre, id, correoElectronico, eventosAsiganados);
+    public Usuario crearUsuario(String nombre, String id, String correoElectronico, List eventosAsiganados,String contrasenia) throws UsuarioException {
+        return agencia.crearUsuario(nombre, id, correoElectronico, eventosAsiganados, contrasenia);
     }
 
     @Override
@@ -61,8 +61,8 @@ public class ModelFactoryController implements IAgenciaService {
     }
 
     @Override
-    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo) throws UsuarioException {
-        return agencia.actualizarUsuario(nombre, cedulaActual, correo);
+    public boolean actualizarUsuario(String nombre, String cedulaActual, String correo,String contrasenia) throws UsuarioException {
+        return agencia.actualizarUsuario(nombre, cedulaActual, correo, contrasenia);
     }
 
     @Override

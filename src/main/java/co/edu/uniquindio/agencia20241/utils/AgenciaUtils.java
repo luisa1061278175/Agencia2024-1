@@ -49,6 +49,24 @@ public class AgenciaUtils {
         agencia.obtenerEventos().add(evento);
 
 
+        evento = new Eventos();
+        evento.setCapacidadMaximaEvento(12100);
+        evento.setDescripcionEvento("Comedor");
+        evento.setFechaEvento("2023-02-20");
+        evento.setHoraEvento("02:43");
+        evento.setNombreEvento("Comida");
+        evento.setUbicacionEvento("Universidad");
+        agencia.obtenerEventos().add(evento);
+
+
+        evento = new Eventos();
+        evento.setCapacidadMaximaEvento(3100);
+        evento.setDescripcionEvento("Comedor");
+        evento.setFechaEvento("2023-02-20");
+        evento.setHoraEvento("02:43");
+        evento.setNombreEvento("Comida");
+        evento.setUbicacionEvento("Universidad");
+
         Reserva reserva = new Reserva();
         reserva.setEstadoReserva("Aceptado");
         reserva.setId("121");
