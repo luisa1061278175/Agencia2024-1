@@ -152,7 +152,7 @@ public class EventoViewController {
         EventoDto eventoDto = construirEventoDto();
         // 2. Validar la información
         if (datosValidos(eventoDto)) {
-            if (modelFactoryController.crearEvento(eventoDto.nombreEvento(), eventoDto.descripcionEvento(), eventoDto.fechaEvento(), eventoDto.horaEvento(), eventoDto.ubicacionEvento(), eventoDto.capacidadMaximaEvento()) != null) {
+            if (modelFactoryController.agregarEventos(eventoDto)) {
                 listaEventosDto.add(eventoDto);
                 mostrarMensaje("Notificación evento", "Evento creado", "El evento se ha creado con éxito", Alert.AlertType.INFORMATION);
                 limpiarCamposEvento();

@@ -5,12 +5,12 @@ import java.util.UUID;
 
 public class Reserva {
     private String id;
-    private Usuario usuario;
+    private String usuario;
     private Eventos evento;
     private LocalDate fechaSolicitud;
     private String estadoReserva;
 
-    public Reserva(String id, Usuario usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
+    public Reserva(String id, String usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
         this.id = id;
         this.usuario = usuario;
         this.evento = evento;
@@ -34,11 +34,11 @@ public class Reserva {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
+    public String getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
 

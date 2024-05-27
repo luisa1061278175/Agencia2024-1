@@ -79,6 +79,11 @@
                                         <Insets top="10.0" />
                                     </VBox.margin>
                                 </Button>
+                        <Button fx:id="btnRefrescar" mnemonicParsing="false" onAction="#refrescar" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Refrescar">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
                             </children>
                         </VBox>
                     </children>

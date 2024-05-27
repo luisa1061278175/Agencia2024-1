@@ -1,0 +1,251 @@
+package co.edu.uniquindio.agencia20241.viewController;
+
+import co.edu.uniquindio.agencia20241.controller.ControllerManager;
+import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
+import co.edu.uniquindio.agencia20241.exception.ReservaException;
+import co.edu.uniquindio.agencia20241.exception.EventoException;
+import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
+import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
+import co.edu.uniquindio.agencia20241.model.Eventos;
+import co.edu.uniquindio.agencia20241.model.Usuario;
+import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+public class ReservaViewController extends Application {
+
+    private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
+    private ControllerManager controllerManager = ControllerManager.getInstance();
+
+    public ObservableList<EventoDto> listaEventosDto = FXCollections.observableArrayList();
+    private ObservableList<ReservaDto> listaReservasDto = FXCollections.observableArrayList();
+    private EventoDto eventoSeleccionado;
+    private InicioSesionController inicioSesionController = new InicioSesionController();
+
+    @FXML
+    private Button btnReservar;
+
+    @FXML
+    private TableColumn<EventoDto, String> colCantidadMaximaEventos;
+
+    @FXML
+    private TableColumn<EventoDto, String> colDescripcionEventos;
+
+    @FXML
+    private TableColumn<EventoDto, String> colFechaEventos;
+
+    @FXML
+    private TableColumn<EventoDto, String> colHoraEventos;
+
+    @FXML
+    private TableColumn<EventoDto, String> colUbicacionEventos;
+
+    @FXML
+    private TableView<EventoDto> tabla;
+
+    @FXML
+    private TextField txtCantidadReservas;
+
+    @FXML
+    void initialize() {
+        initView();
+    }
+
+    @FXML
+    private void initView() {
+        initDataBinding();
+        obtenerEventos();
+        tabla.getItems().clear();
+        tabla.setItems(listaEventosDto);
+        listenerSelection();
+    }
+
+    private void initDataBinding() {
+        colCantidadMaximaEventos.setCellValueFactory(cell -> new SimpleStringProperty(Integer.toString(cell.getValue().capacidadMaximaEvento())));
+        colDescripcionEventos.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().descripcionEvento()));
+        colFechaEventos.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().fechaEvento()));
+        colHoraEventos.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().horaEvento()));
+        colUbicacionEventos.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().ubicacionEvento()));
+    }
+
+    private void obtenerEventos() {
+        listaEventosDto.clear();
+        listaEventosDto.addAll(AgenciaMapper.INSTANCE.getEventosDto(modelFactoryController.obtenerEventos()));
+    }
+
+    private void listenerSelection() {
+        tabla.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            eventoSeleccionado = newSelection;
+        });
+    }
+
+    @FXML
+    private void reservar(ActionEvent event) throws ReservaException, EventoException {
+        crearReserva();
+    }
+
+    private void crearReserva() throws ReservaException, EventoException {
+        if (eventoSeleccionado == null) {
+            mostrarMensaje("Error", "No se ha seleccionado ningún evento.", "Por favor, seleccione un evento para reservar.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String cantidadReservasStr = txtCantidadReservas.getText();
+        if (cantidadReservasStr.isEmpty()) {
+            mostrarMensaje("Error", "Cantidad de reservas vacía.", "Por favor, ingrese la cantidad de reservas que desea realizar.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        int cantidadReservas;
+        try {
+            cantidadReservas = Integer.parseInt(cantidadReservasStr);
+        } catch (NumberFormatException e) {
+            mostrarMensaje("Error", "Cantidad de reservas inválida.", "Por favor, ingrese un número válido.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (cantidadReservas <= 0) {
+            mostrarMensaje("Error", "Cantidad de reservas inválida.", "La cantidad de reservas debe ser mayor a cero.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        Usuario usuarioId = inicioSesionController.idUsuarioAutenticado;
+        if (usuarioId == null) {
+            mostrarMensaje("Error", "Usuario no autenticado.", "Por favor, inicie sesión para realizar una reserva.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String idReserva = UUID.randomUUID().toString();
+
+        // Enviar la solicitud de reserva a RabbitMQ
+        modelFactoryController.enviarSolicitudReserva(cantidadReservasStr, eventoSeleccionado.nombreEvento());
+
+        // Crear y guardar la reserva en el sistema
+        Eventos eventos = AgenciaMapper.INSTANCE.eventoDtoToEvento(eventoSeleccionado);
+        ReservaDto reservaDto = new ReservaDto(
+                idReserva,
+                usuarioId,
+                eventos,
+                LocalDate.now(),
+                "Pendiente"
+        );
+
+        modelFactoryController.agregarReserva(reservaDto);
+        mostrarMensaje("Reserva realizada", "Reserva exitosa.", "Su reserva ha sido realizada correctamente.", Alert.AlertType.INFORMATION);
+    }
+
+    private void mostrarMensaje(String titulo, String encabezado, String contenido, Alert.AlertType tipoAlerta) {
+        Alert alerta = new Alert(tipoAlerta);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(encabezado);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        // Implementación del método start si es necesario
+    }
+}
+
+
+
+package co.edu.uniquindio.agencia20241.viewController;
+
+
+import co.edu.uniquindio.agencia20241.controller.ControllerManager;
+import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
+import co.edu.uniquindio.agencia20241.controller.service.ActionObserver;
+import co.edu.uniquindio.agencia20241.mapping.dto.EmpleadoDto;
+import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
+import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
+import co.edu.uniquindio.agencia20241.model.Agencia;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+
+public class EstadoReservaViewController implements ActionObserver {
+
+    private ControllerManager controllerManager = ControllerManager.getInstance();
+    InicioSesionController inicioSesionController= new InicioSesionController();
+    private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
+    private ObservableList<ReservaDto>listaReservasDto= FXCollections.observableArrayList();
+    private Agencia agencia= new Agencia();
+    LocalDate fecha= LocalDate.now();
+
+    @FXML
+    private TableView<ReservaDto> tabla;
+
+    @FXML
+    private TableColumn<ReservaDto, String> colEstado;
+
+    @FXML
+    private TableColumn<ReservaDto, String> colNombreEvento;
+
+    @FXML
+    private TableColumn<ReservaDto, String> colIdUsuario;
+
+    @FXML
+    private TableColumn<ReservaDto, String> colIdReserva;
+
+    @FXML
+    private TableColumn<ReservaDto, String> colFechaSolicitud;
+
+    @FXML
+    void initialize() {
+        initDataBinding();
+        obtenerReservas();
+        tabla.setItems(listaReservasDto);
+
+
+    }
+
+    private void obtenerReservas() {
+        listaReservasDto.addAll(AgenciaMapper.INSTANCE.getReservasDto(modelFactoryController.obtenerReservas()));
+        System.out.println("reservas disponibles(estadoReserva)"+listaReservasDto);
+    }
+
+
+    private void initDataBinding() {
+        colEstado.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().estadoReserva()));
+        colNombreEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().evento().getNombreEvento()));
+        colIdReserva.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().id()));
+        colFechaSolicitud.setCellValueFactory(cell -> new SimpleStringProperty(fecha.toString()));
+        colIdUsuario.setCellValueFactory(cell -> new SimpleStringProperty(controllerManager.getIdUsuarioAutenticado()));
+    }
+
+    @FXML
+    void refrescar() {
+        listaReservasDto.clear();
+        listaReservasDto.addAll(modelFactoryController.obtenerReservasDto());
+        tabla.setItems(listaReservasDto);
+    }
+    @Override
+    public void onActionPerformed() {
+         obtenerReservas();
+          tabla.refresh();
+    }
+}
+

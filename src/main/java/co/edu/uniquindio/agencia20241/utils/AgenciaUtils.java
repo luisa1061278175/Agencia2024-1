@@ -72,19 +72,13 @@ public class AgenciaUtils {
         reserva.setId("121");
         reserva.setFechaSolicitud(LocalDate.now());
 
-        // Crear un nuevo evento para poder enviarle el nombre
         Eventos eventoReserva = new Eventos();
         eventoReserva.setNombreEvento("Tango");
 
-        //crear un nuevo usuario para poder enviarle el id
-        Usuario idUsuario= new Usuario();
-        idUsuario.setId("10928");
 
-        // Establecer el evento en la reserva
         reserva.setEvento(eventoReserva);
-        reserva.setUsuario(idUsuario);
+        reserva.setUsuario("1231");
 
-        // Agregar la reserva a la lista de reservas de la agencia
         agencia.obtenerReservas().add(reserva);
 
         return agencia;

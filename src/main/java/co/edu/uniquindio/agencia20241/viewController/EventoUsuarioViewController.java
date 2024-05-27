@@ -159,21 +159,17 @@ public class EventoUsuarioViewController {
         String idReserva = UUID.randomUUID().toString();
 
         // Obtener el ID del usuario autenticado
-        String usuarioId = inicioSesionController.idUsuarioAutenticado;
+        String usuarioId = inicioSesionController.idUsuarioAutenticado.toString();
         Usuario usuario = modelFactoryController.buscarUsuario(usuarioId);
 
         // Crear nueva Reserva y agregarla al modelo
         String estado = "p";
 
         // Crear ReservaDto
-        ReservaDto reservaDto = new ReservaDto(idReserva, usuario, eventoOriginal, LocalDate.now(), estado);
+        ReservaDto reservaDto = new ReservaDto(idReserva, usuarioId, eventoOriginal, LocalDate.now(), estado);
 
-       // Reserva reserva = AgenciaMapper.INSTANCE.ReservaDtoToreserva(reservaDto);
 
-        // Añadir reserva a la lista del usuario
-//usuario.getListaReservas().add(reserva);
-
-        modelFactoryController.agregarReserva(idReserva, usuario, eventoOriginal, LocalDate.now(), estado);
+        modelFactoryController.agregarReserva(idReserva, usuarioId, eventoOriginal, LocalDate.now(), estado);
 
         mostrarMensaje("Reserva Realizada", "Reserva realizada con éxito.", "Se han reservado " + cantidadReservas + " espacios para el evento " + eventoSeleccionado.nombreEvento() + ".", Alert.AlertType.CONFIRMATION);
         txtCantidadReservas.setText("");

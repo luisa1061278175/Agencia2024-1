@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public record ReservaDto(
         String id,
-        Usuario usuario,
+        String usuario,
         Eventos evento,
         LocalDate fechaSolicitud,
         String estadoReserva

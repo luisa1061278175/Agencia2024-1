@@ -1,6 +1,7 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.HelloApplication;
+import co.edu.uniquindio.agencia20241.controller.ControllerManager;
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.mapping.dto.EventoDto;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
@@ -25,11 +26,12 @@ public class InicioSesionController {
     private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
     private ObservableList<EventoDto> listaEventosDto = FXCollections.observableArrayList();
 
+    private ControllerManager controllerManager = ControllerManager.getInstance();
     private Usuario usuario = new Usuario();
     private Empleado empleado = new Empleado();
 
     //para saber que usuario inicio sesion
-   public static String idUsuarioAutenticado;
+   public static  String idUsuarioAutenticado;
     private UsuariousuarioViewController usuariousuarioViewController= new UsuariousuarioViewController();
 
     @FXML
@@ -64,30 +66,30 @@ public class InicioSesionController {
 
         Stage stage = new Stage();
 
-        // Cargar los usuarios y empleados desde ModelFactoryController
+
         modelFactoryController.obtenerUsuarios();
         modelFactoryController.obtenerEmpleados();
 
-        // Verificar si es administrador
         boolean respuesta = modelFactoryController.validarUsuarioProperties(id,contrasenia);
 
         if (respuesta) {
             cargarAdmin(stage);
         } else {
-            // Buscar usuario
+
             Usuario usuario = modelFactoryController.buscarUsuario(id);
-            // Buscar empleado
+
             Empleado empleado = buscarEmpleado(id);
 
-            // Verificar usuario
+
             if (usuario != null && contrasenia.equals(usuario.getContrasenia())&& usuario.getId().equals(id)) {
                 cargarUsuario(stage);
-                idUsuarioAutenticado=usuario.getId();
+                idUsuarioAutenticado= usuario.getId();
                 System.out.println(idUsuarioAutenticado);
+                ControllerManager.getInstance().setIdUsuarioAutenticado(idUsuarioAutenticado.toString());
 
                 modelFactoryController.buscarUsuario(idUsuarioAutenticado);
             }
-            // Verificar  empleado
+
             else if (empleado != null && contrasenia.equals(empleado.getContrasenia())) {
                 cargarEmpleado(stage);
             }
@@ -101,7 +103,6 @@ public class InicioSesionController {
 
 
 
-    // Método para buscar un empleado por su ID
     private Empleado buscarEmpleado(String id) {
         for (Empleado e : modelFactoryController.obtenerEmpleados()) {
             if (e.getId().equals(id)) {

@@ -9,7 +9,7 @@ public class Eventos {
     private String fechaEvento;
     private String horaEvento;
     private String ubicacionEvento;
-    private int capacidadMaximaEvento;
+    public int capacidadMaximaEvento;
 
     private String estado;
 

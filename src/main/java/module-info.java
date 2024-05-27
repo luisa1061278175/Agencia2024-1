@@ -5,6 +5,7 @@ module co.edu.uniquindio.agencia20241 {
     requires org.mapstruct;
     requires java.logging;
     requires java.desktop;
+    requires com.rabbitmq.client;
 
     opens co.edu.uniquindio.agencia20241 to javafx.fxml;
     exports co.edu.uniquindio.agencia20241;

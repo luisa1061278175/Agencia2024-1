@@ -95,7 +95,6 @@ public class ReservaViewController extends Application {
     private void reservar(ActionEvent event) throws ReservaException, EventoException {
         crearReserva();
     }
-
     private void crearReserva() throws ReservaException, EventoException {
         if (eventoSeleccionado == null) {
             mostrarMensaje("Error", "No se ha seleccionado ningún evento.", "Por favor, seleccione un evento para reservar.", Alert.AlertType.ERROR);
@@ -126,7 +125,6 @@ public class ReservaViewController extends Application {
             return;
         }
 
-        // Crear reserva
         String idReserva = UUID.randomUUID().toString();
         String usuarioId = inicioSesionController.idUsuarioAutenticado;
 
@@ -135,46 +133,37 @@ public class ReservaViewController extends Application {
             return;
         }
 
-        // Se debe mapear para poder enviar un evento de tipo Evento y no de tipo EventoDto
         Eventos evento = AgenciaMapper.INSTANCE.eventoDtoToEvento(eventoSeleccionado);
-
-        modelFactoryController.agregarReserva(idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas));
 
         ReservaDto reservaDto = construirReservaDto(idReserva, usuarioId, evento, cantidadReservas);
 
-        // Añadir la reserva al ControllerManager
         controllerManager.addReserva(reservaDto);
+        modelFactoryController.agregarReserva(reservaDto);
 
         listaReservasDto.add(reservaDto);
 
-        // Eliminar el evento antiguo
-        modelFactoryController.eliminarEvento(evento.getNombreEvento());
-
-        // Crear un nuevo evento con la capacidad actualizada
-        evento.setCapacidadMaximaEvento(evento.getCapacidadMaximaEvento() - cantidadReservas);
-        modelFactoryController.crearEvento(evento.getNombreEvento(), evento.getDescripcionEvento(), evento.getFechaEvento(), evento.getHoraEvento(), evento.getUbicacionEvento(), evento.getCapacidadMaximaEvento());
-
-        // Actualizar la tabla y limpiar el campo de texto
-        actualizarListaEventosConNuevoEvento(evento);
+        actualizarListaEventos(eventoSeleccionado);
         txtCantidadReservas.clear();
+        modelFactoryController.enviarSolicitudReserva(cantidadReservasStr, eventoSeleccionado.nombreEvento());
 
         mostrarMensaje("Éxito", "Reserva realizada.", "Su reserva ha sido realizada con éxito.", Alert.AlertType.INFORMATION);
     }
 
+    private void actualizarListaEventos(EventoDto eventoActualizado) {
+        listaEventosDto.replaceAll(eventoDto -> eventoDto.nombreEvento().equals(eventoActualizado.nombreEvento()) ? eventoActualizado : eventoDto);
+        tabla.refresh();
+    }
     private void actualizarListaEventosConNuevoEvento(Eventos evento) {
-        // Mapear el nuevo evento a EventoDto
+
         EventoDto nuevoEventoDto = AgenciaMapper.INSTANCE.eventoToEventoDto(evento);
-        // Remover el evento antiguo de la lista
+
         listaEventosDto.removeIf(eventoDto -> eventoDto.nombreEvento().equals(nuevoEventoDto.nombreEvento()));
-        // Agregar el nuevo evento a la lista
+
         listaEventosDto.add(nuevoEventoDto);
-        // Refrescar la tabla
+
         tabla.refresh();
     }
 
-    private String mensajeReserva(int capacidadMaxima, int cantidadReservas) {
-        return cantidadReservas == 1 ? "Se ha realizado 1 reserva." : "Se han realizado " + cantidadReservas + " reservas.";
-    }
 
     private void mostrarMensaje(String titulo, String encabezado, String contenido, Alert.AlertType tipoAlerta) {
         Alert alerta = new Alert(tipoAlerta);
@@ -186,12 +175,12 @@ public class ReservaViewController extends Application {
 
     private ReservaDto construirReservaDto(String idReserva, String usuarioId, Eventos evento, int cantidadReservas) {
         return new ReservaDto(
-                idReserva, modelFactoryController.obtenerUsuario(usuarioId), evento, LocalDate.now(), mensajeReserva(eventoSeleccionado.capacidadMaximaEvento(), cantidadReservas)
-        );
+                idReserva, usuarioId, evento, LocalDate.now(), "Aceptada");
+
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Tu implementación de start
+
     }
 }

@@ -1,9 +1,11 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
-
 import co.edu.uniquindio.agencia20241.controller.ControllerManager;
+import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
 import co.edu.uniquindio.agencia20241.controller.service.ActionObserver;
 import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
+import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
+import co.edu.uniquindio.agencia20241.model.Agencia;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class EstadoReservaViewController implements ActionObserver {
         colNombreEvento.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().evento().getNombreEvento()));
         colIdReserva.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().id()));
         colFechaSolicitud.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().fechaSolicitud().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-        colIdUsuario.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().usuario().getId()));
+        colIdUsuario.setCellValueFactory(cell -> new SimpleStringProperty(controllerManager.getIdUsuarioAutenticado()));
     }
 
     private void cargarReservasEnTabla() {
@@ -67,4 +70,5 @@ public class EstadoReservaViewController implements ActionObserver {
         cargarReservasEnTabla();
         tabla.refresh();
     }
+
 }

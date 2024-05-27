@@ -1,11 +1,8 @@
 package co.edu.uniquindio.agencia20241.viewController;
 
 import co.edu.uniquindio.agencia20241.controller.ModelFactoryController;
-import co.edu.uniquindio.agencia20241.exception.EmpleadoException;
 import co.edu.uniquindio.agencia20241.exception.UsuarioException;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
-import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
-import co.edu.uniquindio.agencia20241.model.Usuario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,16 +10,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class UsuariousuarioViewController {
 
     private ModelFactoryController modelFactoryController = ModelFactoryController.getInstance();
-    private ObservableList<UsuarioDto> listaUsuariosDto= FXCollections.observableArrayList();
+    private ObservableList<UsuarioDto> listaUsuariosDto = FXCollections.observableArrayList();
 
-    public static ObservableList<UsuarioDto>usuarioAutenticado = FXCollections.observableArrayList();
+    public static ObservableList<UsuarioDto> usuarioAutenticado = FXCollections.observableArrayList();
 
     private UsuarioDto usuarioSeleccionado;
 
@@ -42,9 +37,6 @@ public class UsuariousuarioViewController {
     private TableColumn<UsuarioDto, String> colCorreoUsuario;
 
     @FXML
-    private TableColumn<UsuarioDto, String> colEventosAsignados;
-
-    @FXML
     private TableColumn<UsuarioDto, String> colIdentificacionUsuario;
 
     @FXML
@@ -62,50 +54,40 @@ public class UsuariousuarioViewController {
     @FXML
     private TextField txtNombreUsuario;
 
-
     @FXML
     void initialize() {
         initView();
+        listenerSelection();
     }
-
-    @FXML
 
     private void initView() {
         initDataBinding();
 
         tabla.getItems().clear();
 
-        tabla.getItems().add(usuarioAutenticado.get(0));
-
+        if (!usuarioAutenticado.isEmpty()) {
+            tabla.getItems().addAll(usuarioAutenticado);
+        }
     }
-
-
-
 
     private void initDataBinding() {
         colCorreoUsuario.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().correoElectronico()));
         colIdentificacionUsuario.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().id()));
         colNombreUsuario.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().nombre()));
-        //colEventosAsignados.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().eventosAsignados()));
     }
-
-
 
     private void listenerSelection() {
         tabla.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             usuarioSeleccionado = newSelection;
-
             mostrarInformacionUsuario(usuarioSeleccionado);
         });
     }
-    
 
     private void mostrarInformacionUsuario(UsuarioDto usuarioSeleccionado) {
-        if(usuarioSeleccionado != null){
+        if (usuarioSeleccionado != null) {
             txtNombreUsuario.setText(usuarioSeleccionado.nombre());
             txtCorreoUsuario.setText(usuarioSeleccionado.correoElectronico());
             txtIdentificacionUsuario.setText(usuarioSeleccionado.id());
-           // txtEventosAsignados.setText(usuarioSeleccionado.eventosAsignados());
         }
     }
 
@@ -114,10 +96,7 @@ public class UsuariousuarioViewController {
         txtNombreUsuario.setText("Ingrese el nombre");
         txtIdentificacionUsuario.setText("Ingrese la identificación");
         txtCorreoUsuario.setText("Ingrese el correo");
-        //txtEventosAsignados.setText("Ingrese los eventos asignados");
     }
-
-
 
     @FXML
     void eliminarUsuarioAction(ActionEvent event) throws UsuarioException {
@@ -129,46 +108,42 @@ public class UsuariousuarioViewController {
         actualizarUsuario();
     }
 
-
-    @FXML
     private void eliminarUsuario() throws UsuarioException {
         boolean usuarioEliminado = false;
-        if(usuarioSeleccionado != null){
-            if(mostrarMensajeConfirmacion("¿Estás seguro de eliminar al usuario?")){
+        if (usuarioSeleccionado != null) {
+            if (mostrarMensajeConfirmacion("¿Estás seguro de eliminar al usuario?")) {
                 usuarioEliminado = modelFactoryController.eliminarUsuario(usuarioSeleccionado.id());
-                if(usuarioEliminado){
+                if (usuarioEliminado) {
                     listaUsuariosDto.remove(usuarioSeleccionado);
                     usuarioSeleccionado = null;
                     tabla.getSelectionModel().clearSelection();
                     limpiarCamposUsuario();
                     mostrarMensaje("Notificación usuario", "Usuario eliminado", "El usuario se ha eliminado con éxito", Alert.AlertType.INFORMATION);
-                }else{
+                } else {
                     mostrarMensaje("Notificación usuario", "Usuario no eliminado", "El usuario no se puede eliminar", Alert.AlertType.ERROR);
                 }
             }
-        }else{
+        } else {
             mostrarMensaje("Notificación usuario", "Usuario no seleccionado", "Selecciona un usuario de la lista", Alert.AlertType.WARNING);
         }
     }
 
-    @FXML
     private void actualizarUsuario() throws UsuarioException {
         boolean usuarioActualizado = false;
-        String idActual = usuarioSeleccionado.id();
         UsuarioDto usuarioDto = construirUsuarioDto();
-        if(usuarioSeleccionado != null){
-            if(datosValidos(usuarioDto)){
-                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(),usuarioDto.id() , usuarioDto.correoElectronico(),usuarioDto.contrasenia());
-                if(usuarioActualizado){
+        if (usuarioSeleccionado != null) {
+            if (datosValidos(usuarioDto)) {
+                usuarioActualizado = modelFactoryController.actualizarUsuario(usuarioDto.nombre(), usuarioDto.id(), usuarioDto.correoElectronico(), usuarioDto.contrasenia());
+                if (usuarioActualizado) {
                     listaUsuariosDto.remove(usuarioSeleccionado);
                     listaUsuariosDto.add(usuarioDto);
                     tabla.refresh();
                     mostrarMensaje("Notificación usuario", "Usuario actualizado", "El usuario se ha actualizado con éxito", Alert.AlertType.INFORMATION);
                     limpiarCamposUsuario();
-                }else{
+                } else {
                     mostrarMensaje("Notificación usuario", "Usuario no actualizado", "El usuario no se ha actualizado con éxito", Alert.AlertType.INFORMATION);
                 }
-            }else{
+            } else {
                 mostrarMensaje("Notificación usuario", "Usuario no creado", "Los datos ingresados son inválidos", Alert.AlertType.ERROR);
             }
         }
@@ -187,21 +162,23 @@ public class UsuariousuarioViewController {
         txtNombreUsuario.setText("");
         txtCorreoUsuario.setText("");
         txtIdentificacionUsuario.setText("");
-
     }
 
     private boolean datosValidos(UsuarioDto usuarioDto) {
         String mensaje = "";
-        if(usuarioDto.nombre() == null || usuarioDto.nombre().equals(""))
+        if (usuarioDto.nombre() == null || usuarioDto.nombre().isEmpty()) {
             mensaje += "El nombre es inválido\n";
-        if(usuarioDto.id() == null || usuarioDto.id().equals(""))
+        }
+        if (usuarioDto.id() == null || usuarioDto.id().isEmpty()) {
             mensaje += "La identificación es inválida\n";
-        if(usuarioDto.correoElectronico() == null || usuarioDto.correoElectronico().equals(""))
+        }
+        if (usuarioDto.correoElectronico() == null || usuarioDto.correoElectronico().isEmpty()) {
             mensaje += "El correo es inválido\n";
+        }
 
-        if(mensaje.equals("")){
+        if (mensaje.isEmpty()) {
             return true;
-        }else{
+        } else {
             mostrarMensaje("Notificación usuario", "Datos inválidos", mensaje, Alert.AlertType.WARNING);
             return false;
         }

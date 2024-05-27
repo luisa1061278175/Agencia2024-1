@@ -50,7 +50,7 @@
                         <VBox alignment="CENTER" prefHeight="127.0" prefWidth="150.0" />
                         <VBox alignment="CENTER" prefHeight="143.0" prefWidth="163.0">
                             <children>
-                                <Button fx:id="btnModificarUsuario" mnemonicParsing="false" onAction="#actualizarUsuario" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Modificar">
+                                <Button fx:id="btnModificarUsuario" mnemonicParsing="false" onAction="#actualizarUsuarioAction" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Modificar">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
@@ -60,7 +60,7 @@
                                         <Insets top="10.0" />
                                     </VBox.margin>
                                 </Button>
-                                <Button fx:id="btnEliminarUsuario" mnemonicParsing="false" onAction="#eliminarUsuario" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Eliminar">
+                                <Button fx:id="btnEliminarUsuario" mnemonicParsing="false" onAction="#eliminarUsuarioAction" prefHeight="26.0" prefWidth="128.0" styleClass="button4" stylesheets="@style.css" text="Eliminar">
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>

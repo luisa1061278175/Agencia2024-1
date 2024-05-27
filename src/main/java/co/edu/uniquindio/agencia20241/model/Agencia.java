@@ -5,15 +5,16 @@ import co.edu.uniquindio.agencia20241.exception.*;
 import co.edu.uniquindio.agencia20241.mapping.dto.ReservaDto;
 import co.edu.uniquindio.agencia20241.mapping.dto.UsuarioDto;
 import co.edu.uniquindio.agencia20241.mapping.mappers.AgenciaMapper;
-import co.edu.uniquindio.agencia20241.utils.Utils;
+import co.edu.uniquindio.agencia20241.utils.ArchivoUtil;
 import co.edu.uniquindio.agencia20241.viewController.UsuariousuarioViewController;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Agencia implements IAgenciaService {
+public class Agencia implements IAgenciaService, Serializable {
     private static final long serialVersionUID = 1L;
     ArrayList<Empleado> listaEmpleados = new ArrayList<>();
     ArrayList<Usuario> listaUsuarios = new ArrayList<>();
@@ -26,6 +27,10 @@ public class Agencia implements IAgenciaService {
 
     public Agencia() {
 
+    }
+
+    public ArrayList<Empleado> getListaEmpleados() {
+        return listaEmpleados;
     }
 
     public void setListaEmpleados(ArrayList<Empleado> listaEmpleados) {
@@ -72,7 +77,7 @@ public class Agencia implements IAgenciaService {
         }
     }
 
-    @Override
+
     public Empleado crearEmpleado(String nombre, String id, String correoElectronico, String eventosAsiganados) throws EmpleadoException {
         Empleado nuevoEmpleado = null;
         boolean empleadoExiste = verificarEmpleadoExistente(id);
@@ -89,6 +94,12 @@ public class Agencia implements IAgenciaService {
         }
         return nuevoEmpleado;
     }
+
+    public void agregarEmpleado(Empleado nuevoEmpleado) throws EmpleadoException{
+        getListaEmpleados().add(nuevoEmpleado);
+    }
+
+
 
     @Override
     public boolean eliminarEmpleado(String cedula) throws EmpleadoException {
@@ -151,46 +162,44 @@ public class Agencia implements IAgenciaService {
 
 
 
-    public Usuario crearUsuario(String nombre, String id, String correoElectronico,List reservasRealizadas,String contrasenia) throws UsuarioException {
-            Usuario usuario = null;
-            boolean usuarioExiste = verificarUsuarioExistente(id);
-            if(usuarioExiste){
-                throw new UsuarioException("El Usuario con cedula: "+id+" ya existe");
-            }else{
-                usuario = new Usuario();
-                usuario.setNombre(nombre);
-                usuario.setId(id);
-                usuario.setCorreoElectronico(correoElectronico);
-                usuario.setListaReservas(reservasRealizadas);
-                usuario.setContrasenia(contrasenia);;
-
-                obtenerUsuarios().add(usuario);
-            }
+    public Usuario crearUsuario(String nombre, String id, String correoElectronico, List reservasRealizadas, String contrasenia) throws UsuarioException {
+        boolean usuarioExiste = verificarUsuarioExistente(id);
+        if (usuarioExiste) {
+            throw new UsuarioException("El Usuario con cédula: " + id + " ya existe");
+        } else {
+            Usuario usuario = new Usuario();
+            usuario.setNombre(nombre);
+            usuario.setId(id);
+            usuario.setCorreoElectronico(correoElectronico);
+            usuario.setListaReservas(reservasRealizadas);
+            usuario.setContrasenia(contrasenia);
+            obtenerUsuarios().add(usuario);
             return usuario;
         }
-
+    }
+    public void agregarUsuario(Usuario nuevoUsuario) {
+        getListaUsuarios().add(nuevoUsuario);
+    }
 
     @Override
     public boolean eliminarUsuario(String id) throws UsuarioException {
-        Usuario usuario = null;
-        boolean flagExiste = false;
-        usuario = obtenerUsuario(id);
-        if(usuario == null)
-            throw new UsuarioException("El empleado a eliminar no existe");
-        else{
+        Usuario usuario = obtenerUsuario(id);
+        if (usuario == null) {
+            throw new UsuarioException("El usuario a eliminar no existe");
+        } else {
             obtenerUsuarios().remove(usuario);
-            flagExiste = true;
+            return true;
         }
-        return flagExiste;
     }
 
     @Override
     public boolean actualizarUsuario(String nombre, String cedulaActual, String correo,String contrasenia) throws UsuarioException {
         Usuario usuario = obtenerUsuario(cedulaActual);
         if(usuario == null) {
+            System.out.println("lista Usuarios: "+usuario);
             throw new UsuarioException("El usuario a actualizar no existe");
         } else {
-            // Realiza la actualización del usuario
+
             usuario.setNombre(nombre);
             usuario.setId(cedulaActual);
             usuario.setCorreoElectronico(correo);
@@ -261,6 +270,10 @@ public class Agencia implements IAgenciaService {
             obtenerEventos().add(nuevoEvento);
         }
         return nuevoEvento;
+    }
+
+    public void agregarEvento(Eventos nuevoEvento) throws EmpleadoException{
+        getListaEventos().add(nuevoEvento);
     }
 
     @Override
@@ -336,7 +349,7 @@ public class Agencia implements IAgenciaService {
     @Override
 
     public boolean validarUsuarioProperties(String usuario, String contrasena){
-        Login datosArchivo = Utils.leerArchvos();
+        Login datosArchivo = ArchivoUtil.leerArchivos();
 
         if( datosArchivo.getUsername().equals(usuario) && datosArchivo.getContrasena().equals(contrasena) ){
             return true;
@@ -362,9 +375,13 @@ public class Agencia implements IAgenciaService {
 
 //reservas
 
+    public void agregarReservas(Reserva nuevaReserva) throws EmpleadoException{
+        getListaReservas().add(nuevaReserva);
+        System.out.println("reserva creada (agencia)"+nuevaReserva);
+    }
 
     @Override
-public void agregarReserva(String id, Usuario usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
+public void agregarReserva(String id, String usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva) {
         Reserva nuevaReserva = null;
 
             nuevaReserva = new Reserva(id, usuario, evento, fechaSolicitud, estadoReserva);
@@ -372,6 +389,10 @@ public void agregarReserva(String id, Usuario usuario, Eventos evento, LocalDate
             obtenerReservas().add(nuevaReserva);
 
     }
+
+
+
+
 @Override
     public ArrayList<Reserva> obtenerReservas() {
         return listaReservas;

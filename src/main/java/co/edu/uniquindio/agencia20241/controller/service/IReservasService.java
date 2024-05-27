@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public interface IReservasService {
 
-    void agregarReserva(String id, Usuario usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva);
+    void agregarReserva(String id, String usuario, Eventos evento, LocalDate fechaSolicitud, String estadoReserva);
 
     ArrayList<Reserva> obtenerReservas();
 

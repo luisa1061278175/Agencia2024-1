@@ -43,6 +43,8 @@ public interface AgenciaMapper {
     @Named("usuarioToUsuarioDto")
     UsuarioDto usuarioToUsuarioDto(Usuario usuario);
 
+    List<UsuarioDto> usuariosToUsuariosDto(List<Usuario> usuarios);
+
     Usuario usuarioDtoToUsuario(UsuarioDto usuarioDto);
 
     @IterableMapping(qualifiedByName = "usuarioToUsuarioDto")
@@ -65,7 +67,10 @@ public interface AgenciaMapper {
     @Named("reservasToReservasDto")
     ReservaDto reservasToReservasDto(Reserva reserva);
 
+    Reserva reservaDtoToReserva(ReservaDto reservaDto);
+
     Reserva reservasToReservasDto(ReservaDto reservaDto);
+    List<ReservaDto> reservasToReservasDto(List<Reserva> reservas);
 
     @IterableMapping(qualifiedByName = "reservasToReservasDto")
     List<ReservaDto> getReservasDto(List<Reserva> listaReservas);

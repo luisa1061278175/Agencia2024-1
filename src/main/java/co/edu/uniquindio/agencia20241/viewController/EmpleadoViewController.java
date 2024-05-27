@@ -133,7 +133,7 @@ public class EmpleadoViewController {
         EmpleadoDto empleadoDto = construirEmpleadoDto();
         //2. Validar la información
         if(datosValidos(empleadoDto)){
-            if(modelFactoryController.crearEmpleado(empleadoDto.nombre(), empleadoDto.id(), empleadoDto.correoElectronico(), empleadoDto.eventosAsiganados()) != null){
+            if(modelFactoryController.agregarEmpleado(empleadoDto)){
                 listaEmpleadosDto.add(empleadoDto);
                 mostrarMensaje("Notificación empleado", "Empleado creado", "El empleado se ha creado con éxito", Alert.AlertType.INFORMATION);
                 limpiarCamposEmpleado();
@@ -168,12 +168,12 @@ public class EmpleadoViewController {
 
     private void actualizarEmpleado() throws EmpleadoException {
         boolean clienteActualizado = false;
-        //1. Capturar los datos
+
         String cedulaActual = empleadoSeleccionado.id();
         EmpleadoDto empleadoDto = construirEmpleadoDto();
-        //2. verificar el empleado seleccionado
+
         if(empleadoSeleccionado != null){
-            //3. Validar la información
+
             if(datosValidos(empleadoSeleccionado)){
                 clienteActualizado = modelFactoryController.actualizarEmpleado(cedulaActual,empleadoDto.nombre(), empleadoDto.correoElectronico(), empleadoDto.eventosAsiganados());
                 if(clienteActualizado){
